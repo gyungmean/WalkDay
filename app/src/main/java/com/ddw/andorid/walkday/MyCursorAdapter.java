@@ -27,10 +27,10 @@ public class MyCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        TextView tvDate = view.findViewById(R.id.tvModifyDate);
-        TextView tvDistance = view.findViewById(R.id.tvDistance);
-        TextView tvTime = view.findViewById(R.id.tvTime);
-        TextView tvKcal = view.findViewById(R.id.tvKcal);
+        TextView tvDate = view.findViewById(R.id.tvWalkDate);
+        TextView tvDistance = view.findViewById(R.id.TextView);
+        TextView tvTime = view.findViewById(R.id.tvWalkDistance);
+        TextView tvKcal = view.findViewById(R.id.tvWalkTime);
         TextView tvName = view.findViewById(R.id.tvName);
 
         tvDate.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_DATE)));

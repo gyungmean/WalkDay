@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class WalkDto implements Serializable {
+public class WalkDTO implements Serializable {
 
     private long id;
     private String date;

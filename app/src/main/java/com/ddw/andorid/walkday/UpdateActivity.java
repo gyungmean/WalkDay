@@ -45,7 +45,7 @@ public class UpdateActivity extends AppCompatActivity {
 
         Log.d(TAG, "cursor : " + id);
 
-        TextView tvDate = findViewById(R.id.tvModifyDate);
+        TextView tvDate = findViewById(R.id.tvWalkDate);
         etDistance = findViewById(R.id.etDistance);
         etTime = findViewById(R.id.etTime);
         etKcal = findViewById(R.id.etKcal);

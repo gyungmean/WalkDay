@@ -26,9 +26,9 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lvWalk = (ListView)findViewById(R.id.lvWalk);
+        lvWalk = (ListView)findViewById(R.id.lvRecentWalk);
         helper = new WalkDBHelper(this);
-        adapter = new MyCursorAdapter(this, R.layout.listview_layout, null);
+        adapter = new MyCursorAdapter(this, R.layout.listview_walk_layout, null);
         lvWalk.setAdapter(adapter);
 
         lvWalk.setOnItemClickListener(new AdapterView.OnItemClickListener() {

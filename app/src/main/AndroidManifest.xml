@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AllWalkActivity"/>
-        <activity android:name=".InsertWalkActivity"/>
+        <activity android:name=".WriteActivity"/>
         <activity android:name=".UpdateActivity"/>
     </application>
 

@@ -23,8 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".AddDogActivity"/>
         <activity android:name=".AllWalkActivity"/>
         <activity android:name=".WriteActivity"/>
+        <activity android:name=".DogInfoActivity" />
 
     </application>
 

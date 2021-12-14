@@ -1,4 +1,6 @@
 package com.ddw.andorid.walkday;
 
-public class WeatherDTO {
+import java.io.Serializable;
+
+public class WeatherDTO implements Serializable {
 }

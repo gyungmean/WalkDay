@@ -31,12 +31,12 @@ public class MyCursorAdapter extends CursorAdapter {
         TextView tvDistance = view.findViewById(R.id.TextView);
         TextView tvTime = view.findViewById(R.id.tvWalkDistance);
         TextView tvKcal = view.findViewById(R.id.tvWalkTime);
-        TextView tvName = view.findViewById(R.id.tvName);
+
 
         tvDate.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_DATE)));
         tvDistance.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_DIS)));
         tvTime.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_TIME)));
         tvKcal.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_KCAL)));
-        tvName.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_NAME)));
+
     }
 }

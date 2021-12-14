@@ -1,4 +1,6 @@
 package com.ddw.andorid.walkday;
 
-public class DogDTO {
+import java.io.Serializable;
+
+public class DogDTO implements Serializable {
 }

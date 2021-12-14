@@ -37,6 +37,6 @@ public class WalkDTO implements Serializable {
     public String[] getDogs() { return dogs; }
     public void setDogs(String[] dogs) { this.dogs = dogs; }
 
-    public LatLng[] getMaps() {return maps;}
-    public void setMaps(LatLng[] maps) {this.maps = maps;}
+    public LatLng[] getMaps() { return maps; }
+    public void setMaps(LatLng[] maps) { this.maps = maps; }
 }

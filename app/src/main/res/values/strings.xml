@@ -3,4 +3,6 @@
     <string name="api_key">AIzaSyDnv415b0nZU10Mvk0QLy_2CBj1_EAEi3g</string>
     <string name="init_lat">37.604094</string>
     <string name="init_lng">127.042463</string>
+    <string name="weather_api_uri">http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=VH%2BX4wfNjqm%2FbAyFTNcZvuqylm4WV6VHT2ThHUD%2BNKVxUIKr5T8COFVOwJQdzzVRva23zSTIyGbQ%2FeF%2BmRh7zA%3D%3D</string>
+    <string name="weather_api_key">VH+X4wfNjqm/bAyFTNcZvuqylm4WV6VHT2ThHUD+NKVxUIKr5T8COFVOwJQdzzVRva23zSTIyGbQ/eF+mRh7zA==</string>
 </resources>

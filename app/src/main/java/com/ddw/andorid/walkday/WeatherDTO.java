@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class WeatherDTO implements Serializable {
     private int pop; //강수확률
-    private String weather; //날씨정보 맑음, 흐림 등
+    private int sky; //하늘상태
+    private int pty; //강수형태
     private int tmp; //현재기온
     private int max; //오늘 최고기온 float에서 변환
     private int min; //오늘 최저기온 float에서 변환
@@ -17,12 +18,20 @@ public class WeatherDTO implements Serializable {
         this.pop = pop;
     }
 
-    public String getWeather() {
-        return weather;
+    public int getSky() {
+        return sky;
     }
 
-    public void setWeather(String weather) {
-        this.weather = weather;
+    public void setSky(int sky) {
+        this.sky = sky;
+    }
+
+    public int getPty() {
+        return pty;
+    }
+
+    public void setPty(int pty) {
+        this.pty = pty;
     }
 
     public int getTmp() {

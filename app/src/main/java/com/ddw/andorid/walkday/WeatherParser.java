@@ -12,7 +12,7 @@ public class WeatherParser {
 
     final static String TAG = "WeatherParser";
 
-    private enum TagType {NONE, CATEGORY, FCSTVALUE, FCSTTIME, RESULTCODE};
+    private enum TagType {NONE, CATEGORY, FCSTVALUE, FCSTTIME, FCSTDATE, RESULTCODE};
     private enum CategoryType {NONE, POP, SKY, PTY, TMP, TMN, TMX}
 
 //    private final static String ITEM_TAG = "item";
@@ -20,9 +20,11 @@ public class WeatherParser {
     private final static String FCSTVALUE_TAG = "fcstValue"; //값
     private final static String RESULTCODE_TAG= "resultCode"; //오류발생시
     private final static String FCSTTIME_TAG= "fcstTime"; //기상예보시각
+    private final static String FCSTDATE_TAG= "fcstDate"; //기상예보날짜
     private final static String ITEMS_TAG = "items"; //전체 태그 끝부분
 
     private boolean timeFlag = false;
+    private boolean dateFlag = false;
 
     private final static String C_POP = "POP"; //강수확률
     private final static String C_SKY = "SKY"; //하늘상태
@@ -41,13 +43,13 @@ public class WeatherParser {
         }
     }
 
-    public WeatherDTO parse(String xml, String now){ //now 현재시간
+    public WeatherDTO parse(String xml, String today, String now){ //now 현재시간
         WeatherDTO result = new WeatherDTO();
         WeatherDTO dto;
         TagType tagType = TagType.NONE;
         CategoryType categoryType = CategoryType.NONE;
 
-        Log.d(TAG, "now: " + now);
+        Log.d(TAG, "parser: " +today + ", " + now);
 
         try {
             parser.setInput(new StringReader(xml));
@@ -70,6 +72,8 @@ public class WeatherParser {
                             tagType = TagType.FCSTVALUE;
                         } else if (tag.equals(FCSTTIME_TAG)) {
                             tagType = TagType.FCSTTIME;
+                        }else if (tag.equals(FCSTDATE_TAG)) {
+                            tagType = TagType.FCSTDATE;
                         }else if (tag.equals(RESULTCODE_TAG)) {
                             tagType = TagType.RESULTCODE;
                         }
@@ -89,6 +93,13 @@ public class WeatherParser {
                                     timeFlag = false;
                                 }
                                 break;
+                            case FCSTDATE:
+                                if(parser.getText().equals(today)){ //현재 날짜 정보만 가지고 오기 위해서
+                                    dateFlag = true;
+                            } else{
+                                    dateFlag = false;
+                            }
+                                break;
                             case CATEGORY:
                                 //NONE, POP, SKY, PTY, TMP, TMN, TMX 정보만 필요로함
                                 String category = parser.getText();
@@ -107,26 +118,42 @@ public class WeatherParser {
                                 }
                                 break;
                             case FCSTVALUE: //기상정보값
-                                if(!timeFlag) break; //timeFlag가 false이면 현재시각 정보가 아님
+                                if(!dateFlag) {
+                                    categoryType = CategoryType.NONE;
+                                    break; //dateFlag가 false이면 현재 정보가 아님
+                                }
+                                if(!timeFlag) {
+                                    if(categoryType != CategoryType.TMN && categoryType != CategoryType.TMX){
+                                        categoryType = CategoryType.NONE;
+                                        break; //tmn이나 tmx는 하루에 한번만 나오는 정보이므로 base_time을 기준으로 찾아야함
+                                    }
+
+                                }
                                 String value = parser.getText();
                                 switch(categoryType){
                                     case POP:
+                                        Log.d(TAG, "POP: " + value);
                                         dto.setPop(Integer.parseInt(value));
                                         break;
                                     case SKY:
+                                        Log.d(TAG, "SKY: " + value);
                                         dto.setSky(Integer.parseInt(value));
                                         break;
                                     case PTY:
+                                        Log.d(TAG, "PTY: " + value);
                                         dto.setPty(Integer.parseInt(value));
                                         break;
                                     case TMP:
+                                        Log.d(TAG, "TMP: " + value);
                                         dto.setTmp(Integer.parseInt(value));
                                         break;
                                     case TMN:
-                                        dto.setMin(Integer.parseInt(value));
+                                        Log.d(TAG, "TMN: " + value);
+                                        dto.setMin((int)Double.parseDouble(value));
                                         break;
                                     case TMX:
-                                        dto.setMax(Integer.parseInt(value));
+                                        Log.d(TAG, "THX: " + value);
+                                        dto.setMax((int)Double.parseDouble(value));
                                         break;
                                 }
                                 categoryType = CategoryType.NONE;

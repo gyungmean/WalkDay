@@ -53,15 +53,16 @@ public class MainActivity extends Activity {
 
     String base_date;
     String base_time;
+    String today;
     String now;
 
 //    TextView weatherRegion;
     TextView weatherDate;
     TextView weatherNowTemp;
-//    TextView weatherMax;
-//    TextView weatherMin;
-//    TextView tvPOP;
-//    ImageView weatherIcon;
+    TextView weatherMax;
+    TextView weatherMin;
+    TextView tvPOP;
+    ImageView weatherIcon;
 
     String x;
     String y;
@@ -87,7 +88,10 @@ public class MainActivity extends Activity {
 
         weatherDate = (TextView) findViewById(R.id.weatherDate);
         weatherNowTemp = (TextView) findViewById(R.id.weatherNowTemp);
-
+        weatherMax = (TextView) findViewById(R.id.weatherMax);
+        weatherMin = (TextView) findViewById(R.id.weatherMin);;
+        tvPOP = (TextView) findViewById(R.id.tvPOP);;
+        weatherIcon = (ImageView) findViewById(R.id.weatherIcon);
 
     }
 
@@ -143,7 +147,7 @@ public class MainActivity extends Activity {
         SimpleDateFormat textDateFormat = new SimpleDateFormat("yy/MM/dd"); //21/12/14
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh00"); //2311
 
-        String today = dateFormat.format(date);
+        today = dateFormat.format(date);
         now = timeFormat.format(date);
         Log.d(TAG, "today: " + today + ", now: " + now);
 
@@ -234,18 +238,52 @@ public class MainActivity extends Activity {
         @Override
         protected void onPostExecute(String result) {
             Log.i(TAG, result);
-            progressDlg.dismiss();
 
             parser = new WeatherParser();
             nowWeather = new WeatherDTO();
 
-            nowWeather = parser.parse(result, now);
+            Log.d(TAG, "onPostExecute: " + today + ", " + now);
+            nowWeather = parser.parse(result, today, now);
             if(nowWeather == null){
                 Log.e(TAG, "nowWeather is null");
             }
 
             /*main activity 에 날씨 정보 저장*/
             weatherNowTemp.setText(Integer.toString(nowWeather.getTmp()));
+            weatherMax.setText(Integer.toString(nowWeather.getMax()));
+            weatherMin.setText(Integer.toString(nowWeather.getMin()));
+            tvPOP.setText(Integer.toString(nowWeather.getPop()));
+
+            if(nowWeather.getPty() == 0){
+                switch (nowWeather.getSky()){
+                    case 1: //맑음
+                        weatherIcon.setImageResource(R.drawable.sun);
+                        break;
+                    case 2: //약간흐림
+                        weatherIcon.setImageResource(R.drawable.sunandcloud);
+                        break;
+                    case 3: //흐림
+                        weatherIcon.setImageResource(R.drawable.clouds);
+                        break;
+                }
+            } else{
+                switch(nowWeather.getPty()){
+                    case 1: //비
+                        weatherIcon.setImageResource(R.drawable.rain);
+                        break;
+                    case 2: //비 or 눈
+                        weatherIcon.setImageResource(R.drawable.sleet);
+                        break;
+                    case 3: //눈
+                        weatherIcon.setImageResource(R.drawable.snow);
+                        break;
+                    case 4: //소나기
+                        weatherIcon.setImageResource(R.drawable.shower);
+                        break;
+                }
+            }
+
+            progressDlg.dismiss();
 
         }
     }

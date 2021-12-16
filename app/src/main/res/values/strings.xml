@@ -5,7 +5,7 @@
     <string name="init_lng">127.042463</string>
     <string name="weather_api_uri">http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst?serviceKey=VH%2BX4wfNjqm%2FbAyFTNcZvuqylm4WV6VHT2ThHUD%2BNKVxUIKr5T8COFVOwJQdzzVRva23zSTIyGbQ%2FeF%2BmRh7zA%3D%3D</string>
     <string name="safe_comment1">신나게 산책하기 좋은 날씨입니다!</string>
-    <string name="safe_comment2">산책은 OK!\n일부 견종은 주의가 필요!</string>
+    <string name="safe_comment2">산책하기에 괜찮은 날씨입니다!\n하지만 일부 견종은 주의가 필요해요!</string>
     <string name="danger_comment1">견종에 따라 위험한 날씨입니다.\n산책시 잘 지켜봐주세요!</string>
     <string name="danger_comment2">산책하기 위험할 수 있어요.\n주의가 필요!</string>
     <string name="danger_comment3">생명에 위협이 있을정도의 날씨입니다.\n오랜시간 산책은 금물!</string>

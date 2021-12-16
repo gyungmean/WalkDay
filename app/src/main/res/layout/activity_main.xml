@@ -98,16 +98,16 @@
                         android:id="@+id/weatherMax"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
+                        android:layout_marginLeft="24dp"
                         android:text="17"
                         android:textSize="24sp" />
 
                     <TextView
                         android:id="@+id/textView234"
-                        android:layout_width="24dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="°"
+                        android:layout_weight="0"
+                        android:text="°/"
                         android:textSize="24sp" />
 
                     <TextView
@@ -119,9 +119,9 @@
 
                     <TextView
                         android:id="@+id/textView20"
-                        android:layout_width="24dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0"
                         android:text="°"
                         android:textSize="24sp" />
 
@@ -171,6 +171,8 @@
         android:layout_marginEnd="16dp"
         android:background="@color/pink"
         android:gravity="center"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:text="TextView"
         android:textColor="#6D4C41"
         android:textSize="18sp" />

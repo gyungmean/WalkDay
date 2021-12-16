@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
     final static String TAG = "MainActivity";
     final static int PERMISSION_REQ_CODE = 100;
 
+    /* weather UI */
 //    TextView weatherRegion;
     TextView weatherDate;
     TextView weatherNowTemp;
@@ -52,6 +53,7 @@ public class MainActivity extends Activity {
     TextView weatherMin;
     TextView tvPOP;
     ImageView weatherIcon;
+    TextView tvWeatherComment;
 
     /*weather*/
     LocationManager locationManager;
@@ -69,11 +71,8 @@ public class MainActivity extends Activity {
     WeatherParser parser;
     WeatherDTO nowWeather;
 
-    /*weather comment*/
-    TextView tvWeatherComment;
-
     /*recent walk*/
-    RecyclerView lvRecentWalk = null;
+    RecyclerView lvRecentWalk;
     WalkDBHelper helper;
     Cursor cursor;
 //    MyCursorAdapter adapter;
@@ -90,7 +89,7 @@ public class MainActivity extends Activity {
         weatherMin = (TextView) findViewById(R.id.weatherMin);;
         tvPOP = (TextView) findViewById(R.id.tvPOP);;
         weatherIcon = (ImageView) findViewById(R.id.weatherIcon);
-
+        tvWeatherComment = (TextView) findViewById(R.id.tvComment);
     }
 
     public void onClick(View v){
@@ -118,7 +117,7 @@ public class MainActivity extends Activity {
         setTimeInfo(); //날짜 관련 정보 설정
         setLocationInfo(); //위치 관련 정보 설정
 
-        /* 날씨 api 연결 */
+        /* 날씨 api 호출 */
         WeatherApiAddress = getResources().getString(R.string.weather_api_uri);
         query = "&pageNo=1"
                 + "&numOfRows=1000"
@@ -130,9 +129,7 @@ public class MainActivity extends Activity {
         Log.d(TAG, "api uri:" + WeatherApiAddress + query);
         new WeatherAsyncTask().execute(WeatherApiAddress, query);
 
-
-        tvWeatherComment = (TextView) findViewById(R.id.tvComment);
-
+        /* 최근 산책 기록 출력 */
         lvRecentWalk = (RecyclerView)findViewById(R.id.lvRecentWalk);
         helper = new WalkDBHelper(this);
     }

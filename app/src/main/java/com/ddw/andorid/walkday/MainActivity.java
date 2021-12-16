@@ -45,6 +45,14 @@ public class MainActivity extends Activity {
     final static String TAG = "MainActivity";
     final static int PERMISSION_REQ_CODE = 100;
 
+//    TextView weatherRegion;
+    TextView weatherDate;
+    TextView weatherNowTemp;
+    TextView weatherMax;
+    TextView weatherMin;
+    TextView tvPOP;
+    ImageView weatherIcon;
+
     /*weather*/
     LocationManager locationManager;
 
@@ -55,15 +63,6 @@ public class MainActivity extends Activity {
     String base_time;
     String today;
     String now;
-
-//    TextView weatherRegion;
-    TextView weatherDate;
-    TextView weatherNowTemp;
-    TextView weatherMax;
-    TextView weatherMin;
-    TextView tvPOP;
-    ImageView weatherIcon;
-
     String x;
     String y;
 
@@ -72,7 +71,6 @@ public class MainActivity extends Activity {
 
     /*weather comment*/
     TextView tvWeatherComment;
-
 
     /*recent walk*/
     RecyclerView lvRecentWalk = null;
@@ -283,8 +281,29 @@ public class MainActivity extends Activity {
                 }
             }
 
+            setWeatherComment(nowWeather);
+
             progressDlg.dismiss();
 
+        }
+    }
+
+    private void setWeatherComment(WeatherDTO w){
+        if(w.getPty() != 0){
+            tvWeatherComment.setText(R.string.rain_comment);
+        }
+
+        int tmp = w.getTmp();
+        if(10 < tmp && tmp <= 18){
+            tvWeatherComment.setText(R.string.safe_comment1);
+        }else if((18 < tmp && tmp <= 21) || 10 > tmp && tmp >= 7){
+            tvWeatherComment.setText(R.string.safe_comment2);
+        }else if((21 < tmp && tmp <= 26) || 7 > tmp && tmp >= -1){
+            tvWeatherComment.setText(R.string.danger_comment1);
+        }else if((26 < tmp && tmp <= 29) || -1 > tmp && tmp >= -7){
+            tvWeatherComment.setText(R.string.danger_comment2);
+        }else if(29 < tmp || -7 > tmp){
+            tvWeatherComment.setText(R.string.danger_comment3);
         }
     }
 

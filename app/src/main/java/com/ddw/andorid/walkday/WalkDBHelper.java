@@ -12,7 +12,7 @@ public class WalkDBHelper extends SQLiteOpenHelper {
     public final static String COL_DATE = "date";
     public final static String COL_DIS = "distance";
     public final static String COL_TIME = "time";
-    public final static String COL_KCAL = "kcal";
+
     public final static String COL_NAME = "name";
 
     public WalkDBHelper(Context context) {

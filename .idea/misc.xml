@@ -3,7 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/activity_add_dog.xml" value="0.36614583333333334" />
+        <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/activity_add_dog.xml" value="0.16" />
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/activity_all_walk.xml" value="0.36614583333333334" />
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/activity_detail.xml" value="0.36614583333333334" />
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/activity_dog_detail.xml" value="0.36614583333333334" />
@@ -12,7 +12,7 @@
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/activity_main.xml" value="0.67" />
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/activity_update.xml" value="0.2" />
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/activity_write.xml" value="0.33" />
-        <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/listview_dog_add_layout.xml" value="0.36614583333333334" />
+        <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/listview_dog_add_layout.xml" value="0.11578947368421053" />
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/listview_dog_check.xml" value="0.36614583333333334" />
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/listview_dog_info_layout.xml" value="0.36614583333333334" />
         <entry key="..\:/Work/mobileApp/walkDay/app/src/main/res/layout/listview_dog_layout.xml" value="0.75" />

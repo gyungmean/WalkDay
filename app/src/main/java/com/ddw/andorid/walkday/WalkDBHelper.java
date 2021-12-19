@@ -1,4 +1,4 @@
-package com.ddw.andorid.walkday;
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   package com.ddw.andorid.walkday;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -22,7 +22,7 @@ public class WalkDBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME + " ( " + COL_ID + " integer primary key autoincrement,"
-                + COL_DATE + " TEXT, " + COL_DIS + " TEXT, " + COL_TIME + " TEXT, "+ COL_KCAL + " TEXT, " + COL_NAME + " TEXT);");
+                + COL_DATE + " TEXT, " + COL_DIS + " TEXT, " + COL_TIME + " TEXT, "+ " TEXT, " + COL_NAME + " TEXT);");
 
 //		샘플 데이터
         db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (null, '21년/09월/15일', '500', '20', '10', '김경민');");

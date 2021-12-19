@@ -7,8 +7,8 @@ public class DogDTO implements Serializable {
     private String birth;
     private float weight;
     private String type;
-    private int[] gender;
-    //사진
+    private int[] gender = new int[3];
+    private String path;//사진
 
 
     public String getName() {
@@ -43,11 +43,19 @@ public class DogDTO implements Serializable {
         this.type = type;
     }
 
-    public int[] getGender() {
-        return gender;
+    public int getGender() {
+        int result = 0;
+        if(gender[0] == 1) {result += 100;}
+        if(gender[1] == 1) {result += 10;}
+        if(gender[2] == 1) {result += 1;}
+        return result;
     }
 
     public void setGender(int[] gender) {
         this.gender = gender;
     }
+
+    public String getPath() { return path; }
+
+    public void setPath(String path) { this.path = path; }
 }

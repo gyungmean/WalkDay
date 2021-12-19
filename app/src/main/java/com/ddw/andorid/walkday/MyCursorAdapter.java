@@ -36,7 +36,6 @@ public class MyCursorAdapter extends CursorAdapter {
         tvDate.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_DATE)));
         tvDistance.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_DIS)));
         tvTime.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_TIME)));
-        tvKcal.setText(cursor.getString(cursor.getColumnIndex(WalkDBHelper.COL_KCAL)));
 
     }
 }

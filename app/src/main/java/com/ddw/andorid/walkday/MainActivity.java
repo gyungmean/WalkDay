@@ -326,8 +326,8 @@ public class MainActivity extends Activity {
 
     /* URLConnection 을 전달받아 연결정보 설정 후 연결, 연결 후 수신한 InputStream 반환 */
     private InputStream getNetworkConnection(HttpURLConnection conn) throws Exception {
-        conn.setReadTimeout(10000);
-        conn.setConnectTimeout(10000);
+        conn.setReadTimeout(100000);
+        conn.setConnectTimeout(100000);
         conn.setRequestMethod("GET");
         conn.setDoInput(true);
 

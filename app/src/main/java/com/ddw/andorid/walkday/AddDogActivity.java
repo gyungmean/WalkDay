@@ -47,14 +47,16 @@ public class AddDogActivity extends Activity {
     ImageView imDog;
     private Uri imagePath;
 
-    DogDBHelper helper = new DogDBHelper(getApplicationContext());
-    SQLiteDatabase dogDB = helper.getWritableDatabase();
+    DogDBHelper helper;
+    SQLiteDatabase dogDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_dog);
         Log.d(TAG, "AddDogActivity START!");
+        helper = new DogDBHelper(getApplicationContext());
+        dogDB = helper.getWritableDatabase();
 
         newDog = new DogDTO();
 
@@ -84,7 +86,9 @@ public class AddDogActivity extends Activity {
                 }
                 //dog db에 저장
                 newDog.setName(etAddName.getText().toString());
-                newDog.setBirth(etAddBirthY.getText().toString() + etAddBirthM.getText().toString() + etAddBirthD.getText().toString());
+                newDog.setBirthY(etAddBirthY.getText().toString());
+                newDog.setBirthM(etAddBirthM.getText().toString());
+                newDog.setBirthD(etAddBirthD.getText().toString());
                 newDog.setWeight(Float.parseFloat(etAddWeight.getText().toString()));
                 newDog.setType(etAddType.getText().toString());
                 int[] temp = new int[3];
@@ -102,10 +106,12 @@ public class AddDogActivity extends Activity {
                 ContentValues row = new ContentValues();
 
                 row.put(DogDBHelper.COL_NAME, newDog.getName());
-                row.put(DogDBHelper.COL_BIRTH, newDog.getBirth());
+                row.put(DogDBHelper.COL_BIRTHY, newDog.getBirthY());
+                row.put(DogDBHelper.COL_BIRTHM, newDog.getBirthM());
+                row.put(DogDBHelper.COL_BIRTHD, newDog.getBirthD());
                 row.put(DogDBHelper.COL_WEIGHT, newDog.getWeight());
                 row.put(DogDBHelper.COL_TYPE, newDog.getType());
-                row.put(DogDBHelper.COL_GENDER, newDog.getBirth());
+                row.put(DogDBHelper.COL_GENDER, newDog.getGender());
                 row.put(DogDBHelper.COL_PATH, newDog.getPath());
 
                 dogDB.insert(DogDBHelper.TABLE_NAME, null, row);

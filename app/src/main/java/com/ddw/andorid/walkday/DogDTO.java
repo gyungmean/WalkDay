@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 public class DogDTO implements Serializable {
     private String name;
-    private String birth;
+    private String birthY;
+    private String birthM;
+    private String birthD;
     private float weight;
     private String type;
     private int[] gender = new int[3];
@@ -19,13 +21,17 @@ public class DogDTO implements Serializable {
         this.name = name;
     }
 
-    public String getBirth() {
-        return birth;
-    }
+    public String getBirthY() { return birthY; }
 
-    public void setBirth(String birth) {
-        this.birth = birth;
-    }
+    public void setBirthY(String birthY) { this.birthY = birthY; }
+
+    public String getBirthM() { return birthM; }
+
+    public void setBirthM(String birthM) { this.birthM = birthM; }
+
+    public String getBirthD() { return birthD; }
+
+    public void setBirthD(String birthD) { this.birthD = birthD; }
 
     public float getWeight() {
         return weight;

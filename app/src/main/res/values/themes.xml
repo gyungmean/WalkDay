@@ -3,7 +3,7 @@
     <style name="Theme.WalkDay" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/pale_pink</item>
-        <item name="colorPrimaryDark">@color/deep_blue</item>
+        <item name="colorPrimaryDark">@color/pale_pink</item>
         <item name="colorAccent">@color/violet</item>
         <!-- Customize your theme here. -->
     </style>

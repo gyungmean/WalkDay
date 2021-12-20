@@ -146,7 +146,7 @@ public class MainActivity extends Activity {
         now = timeFormat.format(date);
         Log.d(TAG, "today: " + today + ", now: " + now);
 
-        if(Integer.parseInt(now) < 300){ //am12-am3일때 전날 자료를 요청해야함
+        if(Integer.parseInt(now) < 300 || Integer.parseInt(now) == 1200){ //am12-am3일때 전날 자료를 요청해야함
             base_date = String.valueOf(Integer.parseInt(today) - 1);
             base_time = "2300";
         }else{

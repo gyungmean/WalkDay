@@ -20,8 +20,10 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
     final static String TAG = "DogAdapter";
 
     private ArrayList<DogDTO> mData = null;
+    static private Context context;
 
-    DogAdapter(ArrayList<DogDTO> list) {
+    DogAdapter(Context mContext, ArrayList<DogDTO> list) {
+        context = mContext;
         mData = list ;
     }
 
@@ -45,8 +47,10 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
                     int pos = getAdapterPosition();
                     Log.d(TAG, "pos: " + Integer.toString(pos));
                     if(pos != RecyclerView.NO_POSITION) {
-                        Intent intent = new Intent(DogInfoActivity.getContext(), DogDetailActivity.class);
-                        intent.putExtra("id", pos);
+                        Intent intent = new Intent(context, DogDetailActivity.class);
+                        intent.putExtra("id", Integer.toString(pos));
+
+                        if (intent != null) context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     }
 
                 }

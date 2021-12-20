@@ -27,11 +27,6 @@ public class DogInfoActivity extends Activity {
     Cursor cursor;
     DogAdapter dogAdapter;
 
-    public static Context getContext() {
-        Context context = getContext();
-        return context;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,7 +72,7 @@ public class DogInfoActivity extends Activity {
         cursor.close();
         db.close();
 
-        dogAdapter = new DogAdapter(mData);
+        dogAdapter = new DogAdapter(getApplicationContext(), mData);
         lvDogInfo.setAdapter(dogAdapter);
         lvDogInfo.setLayoutManager(new LinearLayoutManager(this));
     }

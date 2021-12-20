@@ -3,29 +3,16 @@ package com.ddw.andorid.walkday;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.util.ArrayList;
 
 public class AddDogActivity extends Activity {
 
@@ -79,29 +66,31 @@ public class AddDogActivity extends Activity {
         switch (v.getId()) {
             case R.id.btnAddFinish:
                 Log.d(TAG, "btnAddFinish touched");
-                if(etAddName == null || etAddBirthY == null  || etAddBirthM == null || etAddBirthD == null
-                || etAddWeight == null || etAddType == null || imagePath == null){
+
+                //dog db에 저장
+                try{
+                    newDog.setName(etAddName.getText().toString());
+                    newDog.setBirthY(etAddBirthY.getText().toString());
+                    newDog.setBirthM(etAddBirthM.getText().toString());
+                    newDog.setBirthD(etAddBirthD.getText().toString());
+                    newDog.setWeight(Float.parseFloat(etAddWeight.getText().toString()));
+                    newDog.setType(etAddType.getText().toString());
+
+                    int[] temp = new int[3];
+                    if(cbWo.isChecked()) {
+                        temp[0] = 1;
+                    }
+                    if(chMa.isChecked()) {
+                        temp[1] = 1;
+                    }
+                    if(chNone.isChecked()){
+                        temp[2] = 1;
+                    }
+                    newDog.setGender(temp);
+                }catch(Exception e){
                     Toast.makeText(getApplicationContext(), "입력되지 않은 부분이 있습니다.", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                //dog db에 저장
-                newDog.setName(etAddName.getText().toString());
-                newDog.setBirthY(etAddBirthY.getText().toString());
-                newDog.setBirthM(etAddBirthM.getText().toString());
-                newDog.setBirthD(etAddBirthD.getText().toString());
-                newDog.setWeight(Float.parseFloat(etAddWeight.getText().toString()));
-                newDog.setType(etAddType.getText().toString());
-                int[] temp = new int[3];
-                if(cbWo.isChecked()) {
-                    temp[0] = 1;
-                }
-                if(chMa.isChecked()) {
-                    temp[1] = 1;
-                }
-                if(chNone.isChecked()){
-                    temp[2] = 1;
-                }
-                newDog.setGender(temp);
 
                 ContentValues row = new ContentValues();
 

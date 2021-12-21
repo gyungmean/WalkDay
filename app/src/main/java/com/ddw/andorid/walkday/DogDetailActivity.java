@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
+import java.io.FileInputStream;
 
 public class DogDetailActivity extends Activity {
     final static String TAG = "DogDetailActivity";
@@ -43,7 +48,7 @@ public class DogDetailActivity extends Activity {
         helper = new DogDBHelper(getApplicationContext());
         Intent intent = getIntent();
 
-        id = intent.getStringExtra("id");
+        id = intent.getStringExtra("id").toString();
         Log.d(TAG, "id: " + id);
 
         etModiName = (EditText) findViewById(R.id.etModiName);
@@ -96,7 +101,16 @@ public class DogDetailActivity extends Activity {
                         chModiNone.setChecked(true);
                     }
 
-                    imModiDog.setImageURI(Uri.parse(path));
+                    try{
+                        File dir = new File(getFilesDir() + "/dogImage");
+                        String filename = cursor.getString(cursor.getColumnIndex("path"));
+
+                        File file = new File(dir, filename);
+                        Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
+                        imModiDog.setImageBitmap(bitmap);
+                    } catch (Exception e){
+                        Log.d(TAG, "Image set error!");
+                    }
 
                 }while(cursor.moveToNext());
 
@@ -107,9 +121,6 @@ public class DogDetailActivity extends Activity {
 
     public void onClick(View v){
         switch (v.getId()) {
-            case R.id.btnDogClose:
-                finish();
-                break;
             case R.id.btnDogModify:
                 //dog db 수정
                 break;

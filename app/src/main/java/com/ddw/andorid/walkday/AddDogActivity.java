@@ -5,6 +5,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +15,12 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AddDogActivity extends Activity {
 
@@ -87,6 +95,34 @@ public class AddDogActivity extends Activity {
                         temp[2] = 1;
                     }
                     newDog.setGender(temp);
+
+                    String filename = "";
+                    try{
+                        File storageDir = new File(getFilesDir() + "/dogImage");
+                        if(!storageDir.exists()) storageDir.mkdirs();
+
+                        filename = etAddName.getText().toString() + ".jpg";
+                        Log.d(TAG, "filename: " + filename);
+
+                        File file = new File(storageDir, filename);
+                        boolean deleted = file.delete();
+                        FileOutputStream output = null;
+
+                        try{
+                            output = new FileOutputStream(file);
+                            BitmapDrawable drawable = (BitmapDrawable) imDog.getDrawable();
+                            Bitmap bitmap = drawable.getBitmap();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, output);
+                        } catch(FileNotFoundException e){
+                            e.printStackTrace();
+                        }finally{
+                            assert output != null;
+                            output.close();
+                        }
+
+                    }catch(Exception e){
+                        Log.d(TAG, "Save Error!");
+                    }
                 }catch(Exception e){
                     Toast.makeText(getApplicationContext(), "입력되지 않은 부분이 있습니다.", Toast.LENGTH_SHORT).show();
                     break;
@@ -135,10 +171,7 @@ public class AddDogActivity extends Activity {
                 ContentResolver resolver = getContentResolver();
                 try {
                     imDog.setImageURI(imagePath);    // 선택한 이미지 이미지뷰에 셋
-//                    saveBitmapToJpeg(imgBitmap);    // 내부 저장소에 저장
                     Toast.makeText(getApplicationContext(), "사진 불러오기 성공", Toast.LENGTH_SHORT).show();
-                    newDog.setPath(imagePath.toString());
-                    Log.d(TAG, "newDog setPath : " + imagePath);
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "사진 불러오기 실패", Toast.LENGTH_SHORT).show();
                 }

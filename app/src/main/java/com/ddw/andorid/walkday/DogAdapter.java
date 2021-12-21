@@ -48,7 +48,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
                     Log.d(TAG, "pos: " + Integer.toString(pos));
                     if(pos != RecyclerView.NO_POSITION) {
                         Intent intent = new Intent(context, DogDetailActivity.class);
-                        intent.putExtra("id", Integer.toString(pos));
+                        intent.putExtra("id", Integer.toString(pos + 1));
 
                         if (intent != null) context.startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     }

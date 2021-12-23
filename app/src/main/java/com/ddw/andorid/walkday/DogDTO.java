@@ -3,6 +3,7 @@ package com.ddw.andorid.walkday;
 import java.io.Serializable;
 
 public class DogDTO implements Serializable {
+    private int id;
     private String name;
     private String birthY;
     private String birthM;
@@ -12,6 +13,9 @@ public class DogDTO implements Serializable {
     private int[] gender = new int[3];
     private String path;//사진
 
+    public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getName() {
         return name;

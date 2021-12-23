@@ -85,6 +85,7 @@ public class DogDetailActivity extends Activity {
                     String type = cursor.getString(cursor.getColumnIndex("type"));
                     int gender = cursor.getInt(cursor.getColumnIndex("gender"));
                     String path = cursor.getString(cursor.getColumnIndex("path"));
+                    Log.d(TAG, "name: " + name);
 
                     etModiName.setText(name);
                     etModiBirthY.setText(birthY);
@@ -106,7 +107,7 @@ public class DogDetailActivity extends Activity {
                     try{
                         File dir = new File(getFilesDir() + "/dogImage");
                         String filename = cursor.getString(cursor.getColumnIndex("path"));
-
+                        Log.d(TAG, "file name : " + filename);
                         File file = new File(dir, filename);
                         Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
                         imModiDog.setImageBitmap(bitmap);
@@ -116,6 +117,8 @@ public class DogDetailActivity extends Activity {
 
                 }while(cursor.moveToNext());
 
+        }else{
+            Log.d(TAG, "cursor error");
         }
         cursor.close();
         db.close();

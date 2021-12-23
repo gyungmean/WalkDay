@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -34,6 +36,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -48,6 +51,7 @@ public class MainActivity extends Activity {
     /* weather UI */
 //    TextView weatherRegion;
     TextView weatherDate;
+    TextView weatherRegion;
     TextView weatherNowTemp;
     TextView weatherMax;
     TextView weatherMin;
@@ -71,6 +75,8 @@ public class MainActivity extends Activity {
     WeatherParser parser;
     WeatherDTO nowWeather;
 
+    Geocoder geocoder;
+
     /*recent walk*/
     RecyclerView lvRecentWalk;
     WalkDBHelper helper;
@@ -84,12 +90,15 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         weatherDate = (TextView) findViewById(R.id.weatherDate);
+        weatherRegion = (TextView) findViewById(R.id.weatherRegion);
         weatherNowTemp = (TextView) findViewById(R.id.weatherNowTemp);
         weatherMax = (TextView) findViewById(R.id.weatherMax);
         weatherMin = (TextView) findViewById(R.id.weatherMin);;
         tvPOP = (TextView) findViewById(R.id.tvPOP);;
         weatherIcon = (ImageView) findViewById(R.id.weatherIcon);
         tvWeatherComment = (TextView) findViewById(R.id.tvComment);
+
+        geocoder = new Geocoder(this);
     }
 
     public void onClick(View v){
@@ -164,13 +173,21 @@ public class MainActivity extends Activity {
         GPSTransfer gpsTransfer;
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-        double latitude = 37.605509;
-        double longitude = 127.041427;
+        double latitude = 0.0;
+        double longitude = 0.0;
         Location userLocation = getMyLocation();
         if( userLocation != null ) {
             latitude = userLocation.getLatitude();
             longitude = userLocation.getLongitude();
             Log.d(TAG, "lat: " + latitude + " lng: " + longitude);
+        }
+        String address = getAddress(latitude, longitude);
+        Log.d(TAG, "address : " + address);
+        if (address == null) {
+            Toast.makeText(this, "No data", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            weatherRegion.setText(address);
         }
 
         //좌표 변환
@@ -254,10 +271,10 @@ public class MainActivity extends Activity {
                     case 1: //맑음
                         weatherIcon.setImageResource(R.drawable.sun);
                         break;
-                    case 2: //약간흐림
+                    case 3: //약간흐림
                         weatherIcon.setImageResource(R.drawable.sunandcloud);
                         break;
-                    case 3: //흐림
+                    case 4: //흐림
                         weatherIcon.setImageResource(R.drawable.clouds);
                         break;
                 }
@@ -361,6 +378,31 @@ public class MainActivity extends Activity {
         return result.toString();
     }
 
+    private String getAddress(double latitude, double longitude) {
+
+        List<Address> addresses = null;
+        String result = null;
+
+//        위도/경도에 해당하는 주소 정보를 Geocoder 에게 요청
+        try {
+            addresses = geocoder.getFromLocation(latitude, longitude, 1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        if (addresses == null || addresses.size()  == 0) {
+            Log.d(TAG, "getAddress NULL");
+            return null;
+        } else {
+            Address address = addresses.get(0);
+            result = address.getAdminArea() + " " + address.getSubLocality() + " " + address.getThoroughfare();
+            Log.d(TAG, "address result: " + result);
+
+        }
+        return result;
+    }
 
 
     @Override

@@ -108,6 +108,8 @@ public class AddDogActivity extends Activity {
                         boolean deleted = file.delete();
                         FileOutputStream output = null;
 
+                        newDog.setPath(filename);
+
                         try{
                             output = new FileOutputStream(file);
                             BitmapDrawable drawable = (BitmapDrawable) imDog.getDrawable();

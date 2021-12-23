@@ -60,6 +60,7 @@ public class DogInfoActivity extends Activity {
                     String type = cursor.getString(cursor.getColumnIndex("type"));
 
                     DogDTO dog = new DogDTO();
+                    dog.setId(cursor.getInt(cursor.getColumnIndex("_id")));
                     dog.setName(name);
                     dog.setBirthY(birthY);
                     dog.setWeight(weight);

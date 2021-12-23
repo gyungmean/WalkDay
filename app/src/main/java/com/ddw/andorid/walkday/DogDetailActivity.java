@@ -1,6 +1,7 @@
 package com.ddw.andorid.walkday;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -120,10 +122,53 @@ public class DogDetailActivity extends Activity {
     }
 
     public void onClick(View v){
+        String whereClause;
+        String[] whereArgs;
         switch (v.getId()) {
+            case R.id.btnDogDel:
+                //dog 삭제
+                whereClause = "_id=?";
+                whereArgs = new String[] {id};
+                db = helper.getWritableDatabase();
+                db.delete(DogDBHelper.TABLE_NAME, whereClause, whereArgs);
+
+                Toast.makeText(getApplicationContext(), "삭제완료", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Delete");
+                finish();
+                break;
             case R.id.btnDogModify:
                 //dog db 수정
+                ContentValues row = new ContentValues();
+                row.put(DogDBHelper.COL_NAME, etModiName.getText().toString());
+                row.put(DogDBHelper.COL_BIRTHY, etModiBirthY.getText().toString());
+                row.put(DogDBHelper.COL_BIRTHM, etModiBirthM.getText().toString());
+                row.put(DogDBHelper.COL_BIRTHD, etModiBirthD.getText().toString());
+                row.put(DogDBHelper.COL_WEIGHT, etModiWeight.getText().toString());
+                row.put(DogDBHelper.COL_TYPE, etModiType.getText().toString());
+
+                int temp = 0;
+                if(cbModiWo.isChecked()) {
+                    temp += 100;
+                }
+                if(chModiMa.isChecked()) {
+                    temp += 10;
+                }
+                if(chModiNone.isChecked()){
+                    temp += 1;
+                }
+
+                row.put(DogDBHelper.COL_GENDER, temp);
+
+                whereClause = "_id=?";
+                whereArgs = new String[] {id};
+
+                db = helper.getWritableDatabase();
+                db.update(DogDBHelper.TABLE_NAME, row, whereClause, whereArgs);
+
+                Toast.makeText(getApplicationContext(), "수정완료", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Modify");
                 break;
         }
+        db.close();
     }
 }

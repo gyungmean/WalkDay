@@ -175,12 +175,23 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnDogDel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/violet"
+                android:onClick="onClick"
+                android:text="Delete" />
+
+            <Button
                 android:id="@+id/btnDogModify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/violet"
                 android:layout_weight="1"
+                android:backgroundTint="@color/violet"
+                android:onClick="onClick"
                 android:text="Modify" />
+
         </LinearLayout>
 
     </LinearLayout>

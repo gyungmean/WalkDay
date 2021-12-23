@@ -36,8 +36,8 @@ public class DogDBHelper extends SQLiteOpenHelper {
         db.execSQL(sql);
 
         /*샘플 데이터 추가*/
-        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (null, '쫑', '2018', '05', '10', 3.8, '말티즈', 100, null);");
-        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (null, '쫑2', '2021', '07', '10', 2.4, '말티즈', 100, null);");
+//        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (null, '쫑', '2018', '05', '10', 3.8, '말티즈', 100, null);");
+//        db.execSQL("INSERT INTO " + TABLE_NAME + " VALUES (null, '쫑2', '2021', '07', '10', 2.4, '말티즈', 100, null);");
     }
 
     @Override

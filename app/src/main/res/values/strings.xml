@@ -10,4 +10,6 @@
     <string name="danger_comment2">산책하기 위험할 수 있어요.\n주의가 필요!</string>
     <string name="danger_comment3">생명에 위협이 있을정도의 날씨입니다.\n오랜시간 산책은 금물!</string>
     <string name="rain_comment">비나 눈이 올 수 있어요!\n실내에서 노즈워크는 어떠신가요?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

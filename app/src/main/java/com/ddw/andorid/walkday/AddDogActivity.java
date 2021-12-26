@@ -145,6 +145,7 @@ public class AddDogActivity extends Activity {
 
                 Toast.makeText(getApplicationContext(), "추가완료", Toast.LENGTH_SHORT).show();
                 helper.close();
+                dogDB.close();
                 finish();
                 break;
             case R.id.btnSelectImage:

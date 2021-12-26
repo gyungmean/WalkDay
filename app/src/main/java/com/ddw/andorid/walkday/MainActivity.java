@@ -179,8 +179,9 @@ public class MainActivity extends Activity {
         if( userLocation != null ) {
             latitude = userLocation.getLatitude();
             longitude = userLocation.getLongitude();
-            Log.d(TAG, "lat: " + latitude + " lng: " + longitude);
+
         }
+        Log.d(TAG, "lat: " + latitude + " lng: " + longitude);
         String address = getAddress(latitude, longitude);
         Log.d(TAG, "address : " + address);
         if (address == null) {

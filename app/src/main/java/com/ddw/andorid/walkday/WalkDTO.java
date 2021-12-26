@@ -4,6 +4,7 @@ package com.ddw.andorid.walkday;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class WalkDTO implements Serializable {
 
@@ -13,8 +14,8 @@ public class WalkDTO implements Serializable {
     private String distance;
     private String time;
     private String memo;
-    private String[] dogs;
-    private LatLng[] maps;
+    private List<Integer> dogs;
+    private List<LatLng> maps;
 
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -34,9 +35,9 @@ public class WalkDTO implements Serializable {
     public String getMemo() { return memo; }
     public void setMemo(String memo) { this.memo = memo; }
 
-    public String[] getDogs() { return dogs; }
-    public void setDogs(String[] dogs) { this.dogs = dogs; }
+    public List<Integer> getDogs() { return dogs; }
+    public void setDogs(List<Integer> dogs) { this.dogs = dogs; }
 
-    public LatLng[] getMaps() { return maps; }
-    public void setMaps(LatLng[] maps) { this.maps = maps; }
+    public List<LatLng> getMaps() { return maps; }
+    public void setMaps(List<LatLng> maps) { this.maps = maps; }
 }

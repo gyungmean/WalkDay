@@ -18,7 +18,7 @@ public class AllWalkActivity extends Activity {
     ListView lvWalk = null;
     WalkDBHelper helper;
     Cursor cursor;
-    MyCursorAdapter adapter;
+//    MyCursorAdapter adapter;
     int resultCode = -1;
 
     @Override

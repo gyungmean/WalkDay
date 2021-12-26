@@ -24,7 +24,7 @@ public class DogAdapter extends RecyclerView.Adapter<DogAdapter.ViewHolder> {
 
     DogAdapter(Context mContext, ArrayList<DogDTO> list) {
         context = mContext;
-        mData = list ;
+        mData = list;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

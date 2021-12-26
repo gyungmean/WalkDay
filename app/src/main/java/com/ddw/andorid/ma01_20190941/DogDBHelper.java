@@ -1,11 +1,9 @@
-package com.ddw.andorid.walkday;
+package com.ddw.andorid.ma01_20190941;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
-import androidx.annotation.Nullable;
 
 public class DogDBHelper extends SQLiteOpenHelper {
 

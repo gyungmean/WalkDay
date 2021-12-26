@@ -1,4 +1,4 @@
-package com.ddw.andorid.walkday;
+package com.ddw.andorid.ma01_20190941;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,7 +10,7 @@ public class WalkDBHelper extends SQLiteOpenHelper {
 
     final static String TAG = "WalkDBHelper";
 
-    private final static String DB_NAME = "walk_db";
+    private final static String DB_NAME = "walkday_db";
     public final static String TABLE_NAME = "walk_table";
     public final static String COL_ID = "_id";
     public final static String COL_DATE = "date";

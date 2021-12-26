@@ -1,4 +1,4 @@
-package com.ddw.andorid.walkday;
+package com.ddw.andorid.ma01_20190941;
 
 import org.junit.Test;
 

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WalkDay</string>
+    <string name="app_name">MA01_20190941</string>
     <string name="api_key">AIzaSyDnv415b0nZU10Mvk0QLy_2CBj1_EAEi3g</string>
     <string name="init_lat">37.604094</string>
     <string name="init_lng">127.042463</string>

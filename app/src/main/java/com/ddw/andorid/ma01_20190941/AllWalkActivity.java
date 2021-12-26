@@ -1,15 +1,10 @@
-package com.ddw.andorid.walkday;
+package com.ddw.andorid.ma01_20190941;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class AllWalkActivity extends Activity {
 

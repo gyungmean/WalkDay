@@ -1,4 +1,4 @@
-package com.ddw.andorid.walkday;
+package com.ddw.andorid.ma01_20190941;
 
 import java.io.Serializable;
 
@@ -6,7 +6,6 @@ public class WalkDogsDTO implements Serializable {
     private long id;
     private long walkId;
     private int dogId;
-    private String dogName;
 
     public long getId() {
         return id;
@@ -30,13 +29,5 @@ public class WalkDogsDTO implements Serializable {
 
     public void setDogId(int dogId) {
         this.dogId = dogId;
-    }
-
-    public String getDogName() {
-        return dogName;
-    }
-
-    public void setDogName(String dogName) {
-        this.dogName = dogName;
     }
 }

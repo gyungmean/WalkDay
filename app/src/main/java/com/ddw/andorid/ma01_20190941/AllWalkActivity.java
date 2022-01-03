@@ -3,63 +3,89 @@ package com.ddw.andorid.ma01_20190941;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.ListView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 public class AllWalkActivity extends Activity {
 
     static final String TAG = "AllWalkActivity";
 
-    ListView lvWalk = null;
-    WalkDBHelper helper;
+    RecyclerView lvAllWalk = null;
+    ArrayList<WalkDTO> mData = new ArrayList<WalkDTO>();
+    WalkDayDBHelper helper;
+    SQLiteDatabase db;
     Cursor cursor;
-//    MyCursorAdapter adapter;
-    int resultCode = -1;
+    WalkAdapter walkAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_walk);
 
-//        lvWalk = (ListView)findViewById(R.id.lvRecentWalk);
-//        helper = new WalkDBHelper(this);
-//        adapter = new MyCursorAdapter(this, R.layout.listview_walk_layout, null);
-//        lvWalk.setAdapter(adapter);
-//
-//        lvWalk.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                Intent intent = new Intent(view.getContext(), UpdateActivity.class);
-//                intent.putExtra("ID", id);
-//                startActivityForResult(intent, 0);
-//            }
-//        });
+        Log.d(TAG, "AllWalkActivity START!");
 
-    }
+        lvAllWalk = (RecyclerView) findViewById(R.id.lvAllWalk);
+        helper = new WalkDayDBHelper(getApplicationContext());
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Log.d(TAG, "onActivityResult : " + resultCode);
-//        this.resultCode = resultCode;
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-//        DB에서 데이터를 읽어와 Adapter에 설정
-//        if(resultCode != RESULT_CANCELED) {
-//            Log.d(TAG, "CHANGE CURSOR");
-//            Log.d(TAG, "onActivityResult : " + resultCode);
-//            SQLiteDatabase db = helper.getReadableDatabase();
-//            cursor = db.rawQuery("select * from " + WalkDBHelper.TABLE_NAME, null);
-//            adapter.changeCursor(cursor);
-//            helper.close();
-//        }
-//        if(resultCode == RESULT_CANCELED){
-//            Toast.makeText(this, "수정취소", Toast.LENGTH_SHORT).show();
-//            Log.d(TAG, "RESULT_CANCELED");
-//        }
+        mData = new ArrayList<>();
+
+        String[] columns = {"_id", "date", "people", "distance", "time"};
+        db = helper.getReadableDatabase();
+        cursor = db.query(WalkDayDBHelper.TABLE_WALK, columns, null, null,
+                null, null, null, null);
+        mData.clear();
+
+        if(cursor != null){
+            cursor.moveToFirst();
+            do {
+//                walkId.add(cursor.getInt(cursor.getColumnIndex("_id")));
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String people = cursor.getString(cursor.getColumnIndex("people"));
+                String time = cursor.getString(cursor.getColumnIndex("time"));
+                String distance = cursor.getString(cursor.getColumnIndex("distance"));
+
+                WalkDTO walk = new WalkDTO();
+                walk.setDate(date);
+                walk.setPeople(people);
+                walk.setTime(time);
+                walk.setDistance(distance);
+
+                mData.add(walk);
+
+            }while(cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+
+        walkAdapter = new WalkAdapter(getApplicationContext(), mData);
+        lvAllWalk.setAdapter(walkAdapter);
+        lvAllWalk.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void onClick(View v){
+        Intent intent = null;
+
+        switch (v.getId()) {
+            case R.id.btnWrite2:
+                intent = new Intent(this, WriteActivity.class);
+                break;
+        }
+
+        if (intent != null) startActivity(intent);
     }
 
     @Override

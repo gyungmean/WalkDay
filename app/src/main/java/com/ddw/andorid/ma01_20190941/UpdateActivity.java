@@ -18,7 +18,7 @@ public class UpdateActivity extends Activity {
     EditText etName;
 
     Cursor cursor;
-    WalkDBHelper helper;
+    WalkDayDBHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

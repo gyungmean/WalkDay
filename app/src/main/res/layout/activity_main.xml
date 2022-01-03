@@ -40,9 +40,9 @@
 
             <ImageView
                 android:id="@+id/weatherIcon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="24dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginLeft="12dp"
                 android:layout_marginRight="8dp"
                 tools:src="@tools:sample/avatars" />
 
@@ -219,6 +219,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
-        android:background="#FFFFFF" />
+        android:background="@color/pale_pink" />
 
 </LinearLayout>

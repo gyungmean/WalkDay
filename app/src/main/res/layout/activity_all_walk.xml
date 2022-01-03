@@ -25,11 +25,13 @@
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
             android:backgroundTint="@color/violet"
+            android:onClick="onClick"
             android:text="Write"
             android:textColor="#FFFFFF" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/lvAllWalk"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"

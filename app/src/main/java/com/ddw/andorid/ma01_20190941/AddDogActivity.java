@@ -40,7 +40,7 @@ public class AddDogActivity extends Activity {
     ImageView imDog;
     private Uri imagePath;
 
-    DogDBHelper helper;
+    WalkDayDBHelper helper;
     SQLiteDatabase dogDB;
 
     @Override
@@ -48,7 +48,7 @@ public class AddDogActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_dog);
         Log.d(TAG, "AddDogActivity START!");
-        helper = new DogDBHelper(getApplicationContext());
+        helper = new WalkDayDBHelper(getApplicationContext());
         dogDB = helper.getWritableDatabase();
 
         newDog = new DogDTO();
@@ -130,16 +130,16 @@ public class AddDogActivity extends Activity {
 
                 ContentValues row = new ContentValues();
 
-                row.put(DogDBHelper.COL_NAME, newDog.getName());
-                row.put(DogDBHelper.COL_BIRTHY, newDog.getBirthY());
-                row.put(DogDBHelper.COL_BIRTHM, newDog.getBirthM());
-                row.put(DogDBHelper.COL_BIRTHD, newDog.getBirthD());
-                row.put(DogDBHelper.COL_WEIGHT, newDog.getWeight());
-                row.put(DogDBHelper.COL_TYPE, newDog.getType());
-                row.put(DogDBHelper.COL_GENDER, newDog.getGender());
-                row.put(DogDBHelper.COL_PATH, newDog.getPath());
+                row.put(WalkDayDBHelper.COL_NAME, newDog.getName());
+                row.put(WalkDayDBHelper.COL_BIRTHY, newDog.getBirthY());
+                row.put(WalkDayDBHelper.COL_BIRTHM, newDog.getBirthM());
+                row.put(WalkDayDBHelper.COL_BIRTHD, newDog.getBirthD());
+                row.put(WalkDayDBHelper.COL_WEIGHT, newDog.getWeight());
+                row.put(WalkDayDBHelper.COL_TYPE, newDog.getType());
+                row.put(WalkDayDBHelper.COL_GENDER, newDog.getGender());
+                row.put(WalkDayDBHelper.COL_PATH, newDog.getPath());
 
-                dogDB.insert(DogDBHelper.TABLE_NAME, null, row);
+                dogDB.insert(WalkDayDBHelper.TABLE_DOG, null, row);
 
                 Toast.makeText(getApplicationContext(), "추가완료", Toast.LENGTH_SHORT).show();
                 helper.close();

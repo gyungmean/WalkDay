@@ -35,7 +35,7 @@ public class DogDetailActivity extends Activity {
 
     ImageView imModiDog;
 
-    DogDBHelper helper;
+    WalkDayDBHelper helper;
     SQLiteDatabase db;
     Cursor cursor;
 
@@ -44,7 +44,7 @@ public class DogDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         Log.d(TAG, "DogDetailActivity start!");
-        helper = new DogDBHelper(getApplicationContext());
+        helper = new WalkDayDBHelper(getApplicationContext());
         Intent intent = getIntent();
 
         id = intent.getStringExtra("id").toString();
@@ -69,7 +69,7 @@ public class DogDetailActivity extends Activity {
         String selection = "_id=?";
         String[] selectionArgs = {id};
         db = helper.getWritableDatabase();
-        cursor = db.query(DogDBHelper.TABLE_NAME, null, selection, selectionArgs,
+        cursor = db.query(WalkDayDBHelper.TABLE_DOG, null, selection, selectionArgs,
                 null, null, null, null);
 
         if(cursor.moveToNext()){
@@ -130,7 +130,7 @@ public class DogDetailActivity extends Activity {
                 whereClause = "_id=?";
                 whereArgs = new String[] {id};
                 db = helper.getWritableDatabase();
-                db.delete(DogDBHelper.TABLE_NAME, whereClause, whereArgs);
+                db.delete(WalkDayDBHelper.TABLE_DOG, whereClause, whereArgs);
 
                 Toast.makeText(getApplicationContext(), "삭제완료", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Delete");
@@ -139,12 +139,12 @@ public class DogDetailActivity extends Activity {
             case R.id.btnDogModify:
                 //dog db 수정
                 ContentValues row = new ContentValues();
-                row.put(DogDBHelper.COL_NAME, etModiName.getText().toString());
-                row.put(DogDBHelper.COL_BIRTHY, etModiBirthY.getText().toString());
-                row.put(DogDBHelper.COL_BIRTHM, etModiBirthM.getText().toString());
-                row.put(DogDBHelper.COL_BIRTHD, etModiBirthD.getText().toString());
-                row.put(DogDBHelper.COL_WEIGHT, etModiWeight.getText().toString());
-                row.put(DogDBHelper.COL_TYPE, etModiType.getText().toString());
+                row.put(WalkDayDBHelper.COL_NAME, etModiName.getText().toString());
+                row.put(WalkDayDBHelper.COL_BIRTHY, etModiBirthY.getText().toString());
+                row.put(WalkDayDBHelper.COL_BIRTHM, etModiBirthM.getText().toString());
+                row.put(WalkDayDBHelper.COL_BIRTHD, etModiBirthD.getText().toString());
+                row.put(WalkDayDBHelper.COL_WEIGHT, etModiWeight.getText().toString());
+                row.put(WalkDayDBHelper.COL_TYPE, etModiType.getText().toString());
 
                 int temp = 0;
                 if(cbModiWo.isChecked()) {
@@ -157,13 +157,13 @@ public class DogDetailActivity extends Activity {
                     temp += 1;
                 }
 
-                row.put(DogDBHelper.COL_GENDER, temp);
+                row.put(WalkDayDBHelper.COL_GENDER, temp);
 
                 whereClause = "_id=?";
                 whereArgs = new String[] {id};
 
                 db = helper.getWritableDatabase();
-                db.update(DogDBHelper.TABLE_NAME, row, whereClause, whereArgs);
+                db.update(WalkDayDBHelper.TABLE_DOG, row, whereClause, whereArgs);
 
                 Toast.makeText(getApplicationContext(), "수정완료", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Modify");

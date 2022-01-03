@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.BufferedReader;
@@ -30,6 +32,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -71,10 +74,10 @@ public class MainActivity extends Activity {
 
     /*recent walk*/
     RecyclerView lvRecentWalk;
-    WalkDBHelper helper;
+    WalkDayDBHelper helper;
     Cursor cursor;
-//    MyCursorAdapter adapter;
-//    int resultCode = -1;
+    SQLiteDatabase db;
+    WalkAdapter walkAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,9 @@ public class MainActivity extends Activity {
         tvWeatherComment = (TextView) findViewById(R.id.tvComment);
 
         geocoder = new Geocoder(this);
+
+        lvRecentWalk = (RecyclerView) findViewById(R.id.lvRecentWalk);
+        helper = new WalkDayDBHelper(getApplicationContext());
     }
 
     public void onClick(View v){
@@ -130,9 +136,8 @@ public class MainActivity extends Activity {
         Log.d(TAG, "api uri:" + WeatherApiAddress + query);
         new WeatherAsyncTask().execute(WeatherApiAddress, query);
 
-        /* 최근 산책 기록 출력 */
-        lvRecentWalk = (RecyclerView)findViewById(R.id.lvRecentWalk);
-        helper = new WalkDBHelper(this);
+        setRecentWalk(); //최근 산책기록 출력
+
     }
 
     /* 현재 시간 및 base_time 설정 */
@@ -395,6 +400,64 @@ public class MainActivity extends Activity {
 
         }
         return result;
+    }
+
+    private void setRecentWalk(){
+        ArrayList<WalkDTO> mData = new ArrayList<>();
+
+        String[] columns = {"_id", "date", "people", "time", "distance"};
+        db = helper.getReadableDatabase();
+        cursor = db.query(WalkDayDBHelper.TABLE_WALK, columns, null, null,
+                null, null, null, null);
+        mData.clear();
+//
+//        ArrayList<Integer> walkId = new ArrayList<>();
+
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do{
+                    int id = cursor.getInt(cursor.getColumnIndex("_id"));
+                    String date = cursor.getString(cursor.getColumnIndex("date"));
+                    String people = cursor.getString(cursor.getColumnIndex("people"));
+                    String time = cursor.getString(cursor.getColumnIndex("time"));
+                    String distance = cursor.getString(cursor.getColumnIndex("distance"));
+
+                    WalkDTO walk = new WalkDTO();
+                    walk.setId(id);
+                    walk.setDate(date);
+                    walk.setPeople(people);
+                    walk.setTime(time);
+                    walk.setDistance(distance);
+
+                    mData.add(walk);
+                }while(cursor.moveToNext());
+            }
+        }
+        
+        cursor.close();
+        db.close();
+
+//        List<Integer> result = new ArrayList<>();
+//        for(int i : walkId){
+//            String selection = "_id=?";
+//            String[] selectionArgs = {Integer.toString(i)};
+//            db = helper.getWritableDatabase();
+//            cursor = db.query(WalkDayDBHelper.TABLE_WALK_DOG, null, selection, selectionArgs,
+//                    null, null, null, null);
+//
+//            if(cursor != null){
+//                if(cursor.moveToFirst()) {
+//                    do{
+//
+//                    }while(cursor.moveToNext());
+//                }
+//            }
+//        }
+
+
+        walkAdapter = new WalkAdapter(getApplicationContext(), mData);
+        lvRecentWalk.setAdapter(walkAdapter);
+        lvRecentWalk.setLayoutManager(new LinearLayoutManager(this));
     }
 
 

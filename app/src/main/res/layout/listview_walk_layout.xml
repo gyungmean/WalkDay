@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
     android:background="#FFFFFF"
     android:orientation="vertical">
 
@@ -17,16 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="8dp"
-            android:text="12/14"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/tvWalkDog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
+            android:text="yyyy-mm-dd"
             android:textSize="20sp" />
 
         <TextView
@@ -63,7 +56,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="8dp"
             android:text="오늘의 산책은 " />
 
         <TextView
@@ -72,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:text="TextView" />
 
         <TextView
@@ -81,8 +75,8 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
-            android:text="분 동안" />
+            android:layout_marginBottom="8dp"
+            android:text="동안" />
 
         <TextView
             android:id="@+id/tvWalkDistance"

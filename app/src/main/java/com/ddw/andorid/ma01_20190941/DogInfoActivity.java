@@ -18,7 +18,7 @@ public class DogInfoActivity extends Activity {
 
     RecyclerView lvDogInfo;
     ArrayList<DogDTO> mData = new ArrayList<DogDTO>();
-    DogDBHelper helper;
+    WalkDayDBHelper helper;
     SQLiteDatabase db;
     Cursor cursor;
     DogAdapter dogAdapter;
@@ -31,7 +31,7 @@ public class DogInfoActivity extends Activity {
         Log.d(TAG, "DogInfoActivity START!");
 
         lvDogInfo = (RecyclerView) findViewById(R.id.lvDogInfo);
-        helper = new DogDBHelper(getApplicationContext());
+        helper = new WalkDayDBHelper(getApplicationContext());
 
 
     }
@@ -43,7 +43,7 @@ public class DogInfoActivity extends Activity {
         Log.d(TAG, "DogInfoActivity onResume");
         String[] columns = {"_id", "name", "birth_y", "type", "weight"};
         db = helper.getReadableDatabase();
-        cursor = db.query(DogDBHelper.TABLE_NAME, columns, null, null,
+        cursor = db.query(WalkDayDBHelper.TABLE_DOG, columns, null, null,
                 null, null, null, null);
         mData.clear();
 

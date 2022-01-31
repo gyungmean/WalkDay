@@ -201,7 +201,7 @@ public class MainActivity extends Activity {
         Location currentLocation = null;
         // Register the listener with the Location Manager to receive location updates
         if (checkPermission()) {
-            String locationProvider = LocationManager.GPS_PROVIDER;
+            String locationProvider = LocationManager.NETWORK_PROVIDER;
             currentLocation = locationManager.getLastKnownLocation(locationProvider);
             if (currentLocation != null) {
                 double lng = currentLocation.getLongitude();
@@ -403,61 +403,61 @@ public class MainActivity extends Activity {
     }
 
     private void setRecentWalk(){
-        ArrayList<WalkDTO> mData = new ArrayList<>();
-
-        String[] columns = {"_id", "date", "people", "time", "distance"};
-        db = helper.getReadableDatabase();
-        cursor = db.query(WalkDayDBHelper.TABLE_WALK, columns, null, null,
-                null, null, null, null);
-        mData.clear();
+//        ArrayList<WalkDTO> mData = new ArrayList<>();
 //
-//        ArrayList<Integer> walkId = new ArrayList<>();
-
-        if(cursor != null){
-            if(cursor.moveToFirst()){
-                do{
-                    int id = cursor.getInt(cursor.getColumnIndex("_id"));
-                    String date = cursor.getString(cursor.getColumnIndex("date"));
-                    String people = cursor.getString(cursor.getColumnIndex("people"));
-                    String time = cursor.getString(cursor.getColumnIndex("time"));
-                    String distance = cursor.getString(cursor.getColumnIndex("distance"));
-
-                    WalkDTO walk = new WalkDTO();
-                    walk.setId(id);
-                    walk.setDate(date);
-                    walk.setPeople(people);
-                    walk.setTime(time);
-                    walk.setDistance(distance);
-
-                    mData.add(walk);
-                }while(cursor.moveToNext());
-            }
-        }
-        
-        cursor.close();
-        db.close();
-
-//        List<Integer> result = new ArrayList<>();
-//        for(int i : walkId){
-//            String selection = "_id=?";
-//            String[] selectionArgs = {Integer.toString(i)};
-//            db = helper.getWritableDatabase();
-//            cursor = db.query(WalkDayDBHelper.TABLE_WALK_DOG, null, selection, selectionArgs,
-//                    null, null, null, null);
+//        String[] columns = {"_id", "date", "people", "time", "distance"};
+//        db = helper.getReadableDatabase();
+//        cursor = db.query(WalkDayDBHelper.TABLE_WALK, columns, null, null,
+//                null, null, null, null);
+//        mData.clear();
+////
+////        ArrayList<Integer> walkId = new ArrayList<>();
 //
-//            if(cursor != null){
-//                if(cursor.moveToFirst()) {
-//                    do{
+//        if(cursor != null){
+//            if(cursor.moveToFirst()){
+//                do{
+//                    int id = cursor.getInt(cursor.getColumnIndex("_id"));
+//                    String date = cursor.getString(cursor.getColumnIndex("date"));
+//                    String people = cursor.getString(cursor.getColumnIndex("people"));
+//                    String time = cursor.getString(cursor.getColumnIndex("time"));
+//                    String distance = cursor.getString(cursor.getColumnIndex("distance"));
 //
-//                    }while(cursor.moveToNext());
-//                }
+//                    WalkDTO walk = new WalkDTO();
+//                    walk.setId(id);
+//                    walk.setDate(date);
+//                    walk.setPeople(people);
+//                    walk.setTime(time);
+//                    walk.setDistance(distance);
+//
+//                    mData.add(walk);
+//                }while(cursor.moveToNext());
 //            }
 //        }
-
-
-        walkAdapter = new WalkAdapter(getApplicationContext(), mData);
-        lvRecentWalk.setAdapter(walkAdapter);
-        lvRecentWalk.setLayoutManager(new LinearLayoutManager(this));
+//
+//        cursor.close();
+//        db.close();
+//
+////        List<Integer> result = new ArrayList<>();
+////        for(int i : walkId){
+////            String selection = "_id=?";
+////            String[] selectionArgs = {Integer.toString(i)};
+////            db = helper.getWritableDatabase();
+////            cursor = db.query(WalkDayDBHelper.TABLE_WALK_DOG, null, selection, selectionArgs,
+////                    null, null, null, null);
+////
+////            if(cursor != null){
+////                if(cursor.moveToFirst()) {
+////                    do{
+////
+////                    }while(cursor.moveToNext());
+////                }
+////            }
+////        }
+//
+//
+//        walkAdapter = new WalkAdapter(getApplicationContext(), mData);
+//        lvRecentWalk.setAdapter(walkAdapter);
+//        lvRecentWalk.setLayoutManager(new LinearLayoutManager(this));
     }
 
 

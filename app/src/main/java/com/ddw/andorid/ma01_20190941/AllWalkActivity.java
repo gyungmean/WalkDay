@@ -53,10 +53,10 @@ public class AllWalkActivity extends Activity {
             cursor.moveToFirst();
             do {
 //                walkId.add(cursor.getInt(cursor.getColumnIndex("_id")));
-                String date = cursor.getString(cursor.getColumnIndex("date"));
-                String people = cursor.getString(cursor.getColumnIndex("people"));
-                String time = cursor.getString(cursor.getColumnIndex("time"));
-                String distance = cursor.getString(cursor.getColumnIndex("distance"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                String people = cursor.getString(cursor.getColumnIndexOrThrow("people"));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
+                String distance = cursor.getString(cursor.getColumnIndexOrThrow("distance"));
 
                 WalkDTO walk = new WalkDTO();
                 walk.setDate(date);

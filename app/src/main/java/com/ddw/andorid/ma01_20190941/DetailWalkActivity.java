@@ -73,8 +73,8 @@ public class DetailWalkActivity extends Activity {
             if(cursor.moveToFirst()){
                 do{
                     DogDTO dog = new DogDTO();
-                    dog.setId(cursor.getInt(cursor.getColumnIndex("_id")));
-                    dog.setName(cursor.getString(cursor.getColumnIndex("name")));
+                    dog.setId(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
+                    dog.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
                     Log.d(TAG, "dog name: " + dog.getName());
                     dogs.add(dog);

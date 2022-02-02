@@ -169,6 +169,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
                     row.put(WalkDayDBHelper.COL_DATE, newWalk.getDate());
                     row.put(WalkDayDBHelper.COL_PEOPLE, newWalk.getPeople());
+                    row.put(WalkDayDBHelper.COL_DISTANCE, newWalk.getDistance()); //distance부분 추가
                     row.put(WalkDayDBHelper.COL_TIME, newWalk.getTime());
                     row.put(WalkDayDBHelper.COL_MEMO, newWalk.getMemo());
                 } catch (Exception e) {

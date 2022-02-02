@@ -103,8 +103,8 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
             if(cursor.moveToFirst()){
                 do{
                     DogDTO dog = new DogDTO();
-                    dog.setId(cursor.getInt(cursor.getColumnIndex("_id")));
-                    dog.setName(cursor.getString(cursor.getColumnIndex("name")));
+                    dog.setId(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
+                    dog.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
 
                     Log.d(TAG, "dog name: " + dog.getName());
                     dogs.add(dog);
@@ -306,6 +306,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
             //선 그리기 수행
             polyline = mGoogleMap.addPolyline(pOptions);
+            moveRecord.add(currentLoc);
 
         }
 
@@ -350,8 +351,9 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == PERMISSION_REQ_CODE) {
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQ_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // 퍼미션을 획득하였을 경우 맵 로딩 실행
                 mapLoad();
             } else {

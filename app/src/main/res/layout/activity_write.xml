@@ -194,7 +194,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/pale_pink"
                     android:onClick="onClick"
-                    android:text="취소" />
+                    android:text="cancel" />
 
                 <Button
                     android:id="@+id/btnUpdateAdd"
@@ -202,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/pink"
                     android:onClick="onClick"
-                    android:text="완료" />
+                    android:text="done" />
             </LinearLayout>
 
         </LinearLayout>

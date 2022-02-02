@@ -17,7 +17,6 @@ public class WalkDayDBHelper extends SQLiteOpenHelper {
     public final static String TABLE_WALK_DOG = "walk_dog_table";
     public final static String TABLE_MAPS = "maps_table";
 
-
     public final static String COL_ID = "_id";
 
     /*TABLE_WALK*/
@@ -35,12 +34,13 @@ public class WalkDayDBHelper extends SQLiteOpenHelper {
     public final static String COL_WEIGHT = "weight";
     public final static String COL_TYPE = "type";
     public final static String COL_GENDER = "gender";
-    public final static String COL_PATH = "path";
+    public final static String COL_PATH = "path"; //image
 
-    public final static String COL_WALKID = "walkId";
+    /*walk_dog db와 maps db 모두 사용되는 컬럼*/
+    public final static String COL_WALKID = "walk_id";
 
     /*TABLE_WALK_DOG*/
-    public final static String COL_DOGID = "dogId";
+    public final static String COL_DOGID = "dog_id";
 
     /*TABLE_MAPS*/;
     public final static String COL_LAT = "lat";
@@ -54,8 +54,7 @@ public class WalkDayDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String sql_walk = "create table " + TABLE_WALK + " ( " + COL_ID + " integer primary key autoincrement, "
                 + COL_DATE + " TEXT, " + COL_PEOPLE + " TEXT, " + COL_DISTANCE + " TEXT, "
-                + COL_TIME +  " TEXT, "
-                + COL_MEMO + " TEXT);";
+                + COL_TIME +  " TEXT, " + COL_MEMO + " TEXT);";
         Log.d(TAG, sql_walk);
         db.execSQL(sql_walk);
 

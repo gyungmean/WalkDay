@@ -104,12 +104,11 @@ public class DetailWalkActivity extends Activity {
                 null, null, null, null);
 
         if(cursor.moveToNext()){
-                String date = cursor.getString(cursor.getColumnIndex("date"));
-                String people = cursor.getString(cursor.getColumnIndex("people"));
-                String time = cursor.getString(cursor.getColumnIndex("time"));
-                String distance = cursor.getString(cursor.getColumnIndex("distance"));
-                String memo = cursor.getString(cursor.getColumnIndex("memo"));
-
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                String people = cursor.getString(cursor.getColumnIndexOrThrow("people"));
+                String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
+                String distance = cursor.getString(cursor.getColumnIndexOrThrow("distance"));
+                String memo = cursor.getString(cursor.getColumnIndexOrThrow("memo"));
 
                 tvDetailDate.setText(date);
                 etdetailPeople.setText(people);
@@ -122,6 +121,11 @@ public class DetailWalkActivity extends Activity {
         }
         cursor.close();
         db.close();
+
+        //dog 정보도 가져와서 체크박스 표시해주기
+
+        //map 정보 가져와서 폴리라인 그려주기
+
     }
 
     public void onClick(View v){
@@ -140,37 +144,22 @@ public class DetailWalkActivity extends Activity {
                 finish();
                 break;
             case R.id.btnWalkModify:
-//                //db 수정
-//                ContentValues row = new ContentValues();
-//                row.put(WalkDayDBHelper.COL_NAME, etModiName.getText().toString());
-//                row.put(WalkDayDBHelper.COL_BIRTHY, etModiBirthY.getText().toString());
-//                row.put(WalkDayDBHelper.COL_BIRTHM, etModiBirthM.getText().toString());
-//                row.put(WalkDayDBHelper.COL_BIRTHD, etModiBirthD.getText().toString());
-//                row.put(WalkDayDBHelper.COL_WEIGHT, etModiWeight.getText().toString());
-//                row.put(WalkDayDBHelper.COL_TYPE, etModiType.getText().toString());
-//
-//                int temp = 0;
-//                if(cbModiWo.isChecked()) {
-//                    temp += 100;
-//                }
-//                if(chModiMa.isChecked()) {
-//                    temp += 10;
-//                }
-//                if(chModiNone.isChecked()){
-//                    temp += 1;
-//                }
-//
-//                row.put(WalkDayDBHelper.COL_GENDER, temp);
-//
-//                whereClause = "_id=?";
-//                whereArgs = new String[] {id};
-//
-//                db = helper.getWritableDatabase();
-//                db.update(WalkDayDBHelper.TABLE_DOG, row, whereClause, whereArgs);
-//
-//                Toast.makeText(getApplicationContext(), "수정완료", Toast.LENGTH_SHORT).show();
-//                Log.d(TAG, "Modify");
-//                break;
+                //db 수정
+                ContentValues row = new ContentValues();
+                row.put(WalkDayDBHelper.COL_PEOPLE, etdetailPeople.getText().toString());
+                row.put(WalkDayDBHelper.COL_DISTANCE, etdetailDistance.getText().toString());
+                row.put(WalkDayDBHelper.COL_TIME, etdetailTime.getText().toString());
+                row.put(WalkDayDBHelper.COL_MEMO, etdetailMemo.getText().toString());
+
+                whereClause = "_id=?";
+                whereArgs = new String[] {id};
+
+                db = helper.getWritableDatabase();
+                db.update(WalkDayDBHelper.TABLE_DOG, row, whereClause, whereArgs);
+
+                Toast.makeText(getApplicationContext(), "수정완료", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Modify");
+                break;
         }
         db.close();
     }

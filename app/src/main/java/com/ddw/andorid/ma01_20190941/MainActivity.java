@@ -264,6 +264,8 @@ public class MainActivity extends Activity {
             weatherMin.setText(Integer.toString(nowWeather.getMin()));
             tvPOP.setText(Integer.toString(nowWeather.getPop()));
 
+            Log.d(TAG, "weather: " + Integer.toString(nowWeather.getPty()));
+
             if(nowWeather.getPty() == 0){
                 switch (nowWeather.getSky()){
                     case 1: //맑음
@@ -395,7 +397,11 @@ public class MainActivity extends Activity {
             return null;
         } else {
             Address address = addresses.get(0);
-            result = address.getAdminArea() + " " + address.getSubLocality() + " " + address.getThoroughfare();
+            result = address.getAdminArea() + " ";
+            if(address.getLocality() != null){
+                result += address.getLocality() + " "; //ㅇㅇㅇ도로 시작하는 지역은 여기서 시가 나옴. ex)충청북도 청주시
+            }
+            result += address.getSubLocality() + " " + address.getThoroughfare();
             Log.d(TAG, "address result: " + result);
 
         }
@@ -403,61 +409,82 @@ public class MainActivity extends Activity {
     }
 
     private void setRecentWalk(){
-//        ArrayList<WalkDTO> mData = new ArrayList<>();
-//
-//        String[] columns = {"_id", "date", "people", "time", "distance"};
-//        db = helper.getReadableDatabase();
-//        cursor = db.query(WalkDayDBHelper.TABLE_WALK, columns, null, null,
-//                null, null, null, null);
-//        mData.clear();
-////
-////        ArrayList<Integer> walkId = new ArrayList<>();
-//
-//        if(cursor != null){
-//            if(cursor.moveToFirst()){
-//                do{
-//                    int id = cursor.getInt(cursor.getColumnIndex("_id"));
-//                    String date = cursor.getString(cursor.getColumnIndex("date"));
-//                    String people = cursor.getString(cursor.getColumnIndex("people"));
-//                    String time = cursor.getString(cursor.getColumnIndex("time"));
-//                    String distance = cursor.getString(cursor.getColumnIndex("distance"));
-//
-//                    WalkDTO walk = new WalkDTO();
-//                    walk.setId(id);
-//                    walk.setDate(date);
-//                    walk.setPeople(people);
-//                    walk.setTime(time);
-//                    walk.setDistance(distance);
-//
-//                    mData.add(walk);
-//                }while(cursor.moveToNext());
-//            }
-//        }
-//
-//        cursor.close();
-//        db.close();
-//
-////        List<Integer> result = new ArrayList<>();
-////        for(int i : walkId){
-////            String selection = "_id=?";
-////            String[] selectionArgs = {Integer.toString(i)};
-////            db = helper.getWritableDatabase();
-////            cursor = db.query(WalkDayDBHelper.TABLE_WALK_DOG, null, selection, selectionArgs,
-////                    null, null, null, null);
-////
-////            if(cursor != null){
-////                if(cursor.moveToFirst()) {
-////                    do{
-////
-////                    }while(cursor.moveToNext());
-////                }
-////            }
-////        }
-//
-//
-//        walkAdapter = new WalkAdapter(getApplicationContext(), mData);
-//        lvRecentWalk.setAdapter(walkAdapter);
-//        lvRecentWalk.setLayoutManager(new LinearLayoutManager(this));
+        ArrayList<WalkDTO> mData = new ArrayList<>();
+
+        String[] columns = {"_id", "date", "people", "time", "distance"};
+        db = helper.getReadableDatabase();
+        cursor = db.query(WalkDayDBHelper.TABLE_WALK, columns, null, null,
+                null, null, null, null);
+        mData.clear();
+
+        ArrayList<Integer> walkId = new ArrayList<>();
+
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do{
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                    String people = cursor.getString(cursor.getColumnIndexOrThrow("people"));
+                    String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
+                    String distance = cursor.getString(cursor.getColumnIndexOrThrow("distance"));
+
+                    WalkDTO walk = new WalkDTO();
+                    walkId.add(id);
+                    walk.setId(id);
+                    walk.setDate(date);
+                    walk.setPeople(people);
+                    walk.setTime(time);
+                    walk.setDistance(distance);
+
+                    mData.add(walk);
+                }while(cursor.moveToNext());
+            }
+        }
+
+        cursor.close();
+        db.close();
+
+        /*개정보 출력을 위한 db 가져오기*/
+        List<Integer> result = new ArrayList<>();
+        for(int i : walkId){
+            String selection = "walk_id=?";
+            String[] selectionArgs = {Integer.toString(i)};
+            db = helper.getWritableDatabase();
+            cursor = db.query(WalkDayDBHelper.TABLE_WALK_DOG, null, selection, selectionArgs,
+                    null, null, null, null);
+
+            result.clear();
+            if(cursor != null){
+                if(cursor.moveToFirst()) {
+                    do{
+                        result.add(cursor.getInt(cursor.getColumnIndexOrThrow("dog_id")));
+                    }while(cursor.moveToNext());
+                }
+                for(WalkDTO w : mData){
+                    if(w.getId() == i){
+                        w.setDogs(result);
+                    }
+                }
+            }
+        }
+
+        /*최근 기록을 불러오기 위해 최근 4개만 새로운 리스트에 담기*/
+        ArrayList<WalkDTO> newMData = new ArrayList<>();
+        int idx = mData.size() - 1;
+        if(idx >= 4){
+            int count = 4;
+            while(count > 0){
+                count--;
+                newMData.add(mData.get(idx--));
+            }
+            walkAdapter = new WalkAdapter(getApplicationContext(), newMData);
+        }
+        else{
+            walkAdapter = new WalkAdapter(getApplicationContext(), mData);
+        }
+
+        lvRecentWalk.setAdapter(walkAdapter);
+        lvRecentWalk.setLayoutManager(new LinearLayoutManager(this));
     }
 
 

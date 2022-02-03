@@ -401,7 +401,7 @@ public class MainActivity extends Activity {
             if(address.getLocality() != null){
                 result += address.getLocality() + " "; //ㅇㅇㅇ도로 시작하는 지역은 여기서 시가 나옴. ex)충청북도 청주시
             }
-            result += address.getSubLocality() + " " + address.getThoroughfare();
+            result += address.getSubLocality() + " " + address.getThoroughfare(); //시 + 동
             Log.d(TAG, "address result: " + result);
 
         }

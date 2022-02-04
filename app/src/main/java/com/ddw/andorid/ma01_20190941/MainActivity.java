@@ -170,8 +170,9 @@ public class MainActivity extends Activity {
         GPSTransfer gpsTransfer;
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
-        double latitude = 0.0;
-        double longitude = 0.0;
+        /*기본 주소 서울 남산공원*/
+        double latitude = 37.550966;
+        double longitude = 126.990908;
         Location userLocation = getMyLocation();
         if( userLocation != null ) {
             latitude = userLocation.getLatitude();
@@ -401,7 +402,13 @@ public class MainActivity extends Activity {
             if(address.getLocality() != null){
                 result += address.getLocality() + " "; //ㅇㅇㅇ도로 시작하는 지역은 여기서 시가 나옴. ex)충청북도 청주시
             }
-            result += address.getSubLocality() + " " + address.getThoroughfare(); //시 + 동
+            if(address.getSubLocality() != null){ //구 출력
+                result += address.getSubLocality() + " ";
+            }
+            if(address.getThoroughfare() != null){
+                result += address.getThoroughfare(); //동 출력 or 구가 없는 경우 읍 출력
+            }
+
             Log.d(TAG, "address result: " + result);
 
         }

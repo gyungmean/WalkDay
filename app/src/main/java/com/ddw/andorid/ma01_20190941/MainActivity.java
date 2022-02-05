@@ -267,6 +267,10 @@ public class MainActivity extends Activity {
 
             Log.d(TAG, "weather: " + Integer.toString(nowWeather.getPty()));
 
+            if(Integer.parseInt(now) >= 1900){
+
+            }
+
             if(nowWeather.getPty() == 0){
                 switch (nowWeather.getSky()){
                     case 1: //맑음

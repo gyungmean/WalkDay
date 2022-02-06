@@ -274,10 +274,20 @@ public class MainActivity extends Activity {
             if(nowWeather.getPty() == 0){
                 switch (nowWeather.getSky()){
                     case 1: //맑음
-                        weatherIcon.setImageResource(R.drawable.sun);
+                        if(Integer.parseInt(now) < 1900){
+                            weatherIcon.setImageResource(R.drawable.sun);
+                        }
+                        else{
+                            weatherIcon.setImageResource(R.drawable.sun_night);
+                        }
                         break;
                     case 3: //약간흐림
-                        weatherIcon.setImageResource(R.drawable.sunandcloud);
+                        if(Integer.parseInt(now) < 1900){
+                            weatherIcon.setImageResource(R.drawable.sunandcloud);
+                        }
+                        else{
+                            weatherIcon.setImageResource(R.drawable.clouds_night);
+                        }
                         break;
                     case 4: //흐림
                         weatherIcon.setImageResource(R.drawable.clouds);

@@ -64,6 +64,14 @@ public class DetailWalkActivity extends Activity {
 
         helper = new WalkDayDBHelper(getApplicationContext());
 
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         String[] columns = {"_id", "name"};
         db = helper.getReadableDatabase();
         cursor = db.query(helper.TABLE_DOG, columns, null, null,
@@ -89,13 +97,6 @@ public class DetailWalkActivity extends Activity {
             lvDetailDog.setAdapter(walkDogAdapter);
             lvDetailDog.setLayoutManager(new LinearLayoutManager(this));
         }
-
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         Log.d(TAG, "DogDetailActivity onResume");
         String selection = "_id=?";
         String[] selectionArgs = {id};

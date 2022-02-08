@@ -64,6 +64,7 @@ public class MainActivity extends Activity {
     String base_time;
     String today;
     String now;
+    String isAMorPm;
     String x;
     String y;
 
@@ -147,12 +148,14 @@ public class MainActivity extends Activity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd"); //20211214
         SimpleDateFormat textDateFormat = new SimpleDateFormat("yy/MM/dd"); //21/12/14
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh00"); //2311
+        SimpleDateFormat dayNightFormat = new SimpleDateFormat("a"); //AM PM
 
         today = dateFormat.format(date);
         now = timeFormat.format(date);
-        Log.d(TAG, "today: " + today + ", now: " + now);
+        isAMorPm = dayNightFormat.format(date);
+        Log.d(TAG, "today: " + today + ", now: " + now + ", " + isAMorPm);
 
-        if(Integer.parseInt(now) < 300 || Integer.parseInt(now) == 1200){ //am12-am3일때 전날 자료를 요청해야함
+        if((isAMorPm.equals("오전")) && (Integer.parseInt(now) < 300 || Integer.parseInt(now) == 1200)){ //am12-am3일때 전날 자료를 요청해야함
             base_date = String.valueOf(Integer.parseInt(today) - 1);
             base_time = "2300";
         }else{
@@ -267,22 +270,20 @@ public class MainActivity extends Activity {
 
             Log.d(TAG, "weather: " + Integer.toString(nowWeather.getPty()));
 
-            if(Integer.parseInt(now) >= 1900){
-
-            }
-
             if(nowWeather.getPty() == 0){
                 switch (nowWeather.getSky()){
                     case 1: //맑음
-                        if(Integer.parseInt(now) < 1900){
+                        if((isAMorPm.equals("오전") && 500 < Integer.parseInt(now) && Integer.parseInt(now) < 1200) ||
+                                (isAMorPm.equals("오후") && Integer.parseInt(now) < 1900)){ //am6 ~ pm6
                             weatherIcon.setImageResource(R.drawable.sun);
                         }
-                        else{
+                        else{ //pm7 ~ am5 밤 아이콘출력
                             weatherIcon.setImageResource(R.drawable.sun_night);
                         }
                         break;
                     case 3: //약간흐림
-                        if(Integer.parseInt(now) < 1900){
+                        if((isAMorPm.equals("오전") && 500 < Integer.parseInt(now) && Integer.parseInt(now) < 1200) ||
+                                (isAMorPm.equals("오후") && Integer.parseInt(now) < 1900)){
                             weatherIcon.setImageResource(R.drawable.sunandcloud);
                         }
                         else{

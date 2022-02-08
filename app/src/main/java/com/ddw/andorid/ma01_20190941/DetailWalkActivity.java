@@ -89,8 +89,8 @@ public class DetailWalkActivity extends Activity {
                 }while(cursor.moveToNext());
             }
         }
+
         cursor.close();
-        db.close();
 
         if (dogs.size() != 0) {
             walkDogAdapter = new WalkDogAdapter(getApplicationContext(), dogs);

@@ -273,21 +273,21 @@ public class MainActivity extends Activity {
             if(nowWeather.getPty() == 0){
                 switch (nowWeather.getSky()){
                     case 1: //맑음
-                        if((isAMorPm.equals("오전") && 500 < Integer.parseInt(now) && Integer.parseInt(now) < 1200) ||
-                                (isAMorPm.equals("오후") && Integer.parseInt(now) < 1900)){ //am6 ~ pm6
-                            weatherIcon.setImageResource(R.drawable.sun);
-                        }
-                        else{ //pm7 ~ am5 밤 아이콘출력
+                        if((isAMorPm.equals("오전") && (500 < Integer.parseInt(now) || Integer.parseInt(now) == 1200)) ||
+                                (isAMorPm.equals("오후") && (Integer.parseInt(now) > 700 || Integer.parseInt(now) < 1200))){ //오전 12~5시, 오후 7~11시 밤아이콘
                             weatherIcon.setImageResource(R.drawable.sun_night);
+                        }
+                        else{
+                            weatherIcon.setImageResource(R.drawable.sun);
                         }
                         break;
                     case 3: //약간흐림
-                        if((isAMorPm.equals("오전") && 500 < Integer.parseInt(now) && Integer.parseInt(now) < 1200) ||
-                                (isAMorPm.equals("오후") && Integer.parseInt(now) < 1900)){
-                            weatherIcon.setImageResource(R.drawable.sunandcloud);
+                        if((isAMorPm.equals("오전") && (500 < Integer.parseInt(now) || Integer.parseInt(now) == 1200)) ||
+                                (isAMorPm.equals("오후") && (Integer.parseInt(now) > 700 || Integer.parseInt(now) < 1200))){ //오전 12~5시, 오후 7~11시
+                            weatherIcon.setImageResource(R.drawable.clouds_night);
                         }
                         else{
-                            weatherIcon.setImageResource(R.drawable.clouds_night);
+                            weatherIcon.setImageResource(R.drawable.sunandcloud);
                         }
                         break;
                     case 4: //흐림

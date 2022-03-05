@@ -34,6 +34,7 @@
         <activity android:name=".WriteActivity"/>
         <activity android:name=".DogInfoActivity" />
         <activity android:name=".DogDetailActivity" />
+        <activity android:name=".DetailWalkActivity" />
 
     </application>
 

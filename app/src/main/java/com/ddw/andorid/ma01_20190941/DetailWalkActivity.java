@@ -52,7 +52,7 @@ public class DetailWalkActivity extends Activity {
         Intent intent = getIntent();
 
         id = intent.getStringExtra("id").toString();
-        Log.d(TAG, "id: " + id);
+        Log.d(TAG, "extra id: " + id);
 
         tvDetailDate = (TextView) findViewById(R.id.tvDetailDate);
         etdetailPeople = (EditText) findViewById(R.id.etdetailPeople);
@@ -69,99 +69,99 @@ public class DetailWalkActivity extends Activity {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        String[] columns = {"_id", "name"};
-        db = helper.getReadableDatabase();
-        cursor = db.query(helper.TABLE_DOG, columns, null, null,
-                null, null, null, null);
-        dogs.clear();
-        if(cursor != null){
-            if(cursor.moveToFirst()){
-                do{
-                    DogDTO dog = new DogDTO();
-                    dog.setId(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
-                    dog.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
-
-                    Log.d(TAG, "dog name: " + dog.getName());
-                    dogs.add(dog);
-                }while(cursor.moveToNext());
-            }
-        }
-
-        cursor.close();
-
-        if (dogs.size() != 0) {
-            walkDogAdapter = new WalkDogAdapter(getApplicationContext(), dogs);
-            lvDetailDog.setAdapter(walkDogAdapter);
-            lvDetailDog.setLayoutManager(new LinearLayoutManager(this));
-        }
-        Log.d(TAG, "DogDetailActivity onResume");
-        String selection = "_id=?";
-        String[] selectionArgs = {id};
-        db = helper.getWritableDatabase();
-        cursor = db.query(WalkDayDBHelper.TABLE_WALK, null, selection, selectionArgs,
-                null, null, null, null);
-
-        if(cursor.moveToNext()){
-                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
-                String people = cursor.getString(cursor.getColumnIndexOrThrow("people"));
-                String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
-                String distance = cursor.getString(cursor.getColumnIndexOrThrow("distance"));
-                String memo = cursor.getString(cursor.getColumnIndexOrThrow("memo"));
-
-                tvDetailDate.setText(date);
-                etdetailPeople.setText(people);
-                etdetailDistance.setText(memo);
-                etdetailTime.setText(time);
-                etdetailMemo.setText(distance);
-
-        }else{
-            Log.d(TAG, "cursor error");
-        }
-        cursor.close();
-        db.close();
-
-        //dog 정보도 가져와서 체크박스 표시해주기
-
-        //map 정보 가져와서 폴리라인 그려주기
-
-    }
-
-    public void onClick(View v){
-        String whereClause;
-        String[] whereArgs;
-        switch (v.getId()) {
-            case R.id.btnWalkDel:
-                //삭제
-                whereClause = "_id=?";
-                whereArgs = new String[] {id};
-                db = helper.getWritableDatabase();
-                db.delete(WalkDayDBHelper.TABLE_WALK, whereClause, whereArgs);
-
-                Toast.makeText(getApplicationContext(), "삭제완료", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Delete");
-                finish();
-                break;
-            case R.id.btnWalkModify:
-                //db 수정
-                ContentValues row = new ContentValues();
-                row.put(WalkDayDBHelper.COL_PEOPLE, etdetailPeople.getText().toString());
-                row.put(WalkDayDBHelper.COL_DISTANCE, etdetailDistance.getText().toString());
-                row.put(WalkDayDBHelper.COL_TIME, etdetailTime.getText().toString());
-                row.put(WalkDayDBHelper.COL_MEMO, etdetailMemo.getText().toString());
-
-                whereClause = "_id=?";
-                whereArgs = new String[] {id};
-
-                db = helper.getWritableDatabase();
-                db.update(WalkDayDBHelper.TABLE_DOG, row, whereClause, whereArgs);
-
-                Toast.makeText(getApplicationContext(), "수정완료", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Modify");
-                break;
-        }
-        db.close();
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        String[] columns = {"_id", "name"};
+//        db = helper.getReadableDatabase();
+//        cursor = db.query(helper.TABLE_DOG, columns, null, null,
+//                null, null, null, null);
+//        dogs.clear();
+//        if(cursor != null){
+//            if(cursor.moveToFirst()){
+//                do{
+//                    DogDTO dog = new DogDTO();
+//                    dog.setId(cursor.getInt(cursor.getColumnIndexOrThrow("_id")));
+//                    dog.setName(cursor.getString(cursor.getColumnIndexOrThrow("name")));
+//
+//                    Log.d(TAG, "dog name: " + dog.getName());
+//                    dogs.add(dog);
+//                }while(cursor.moveToNext());
+//            }
+//        }
+//
+//        cursor.close();
+//
+//        if (dogs.size() != 0) {
+//            walkDogAdapter = new WalkDogAdapter(getApplicationContext(), dogs);
+//            lvDetailDog.setAdapter(walkDogAdapter);
+//            lvDetailDog.setLayoutManager(new LinearLayoutManager(this));
+//        }
+//        Log.d(TAG, "DogDetailActivity onResume");
+//        String selection = "_id=?";
+//        String[] selectionArgs = {id};
+//        db = helper.getWritableDatabase();
+//        cursor = db.query(WalkDayDBHelper.TABLE_WALK, null, selection, selectionArgs,
+//                null, null, null, null);
+//
+//        if(cursor.moveToNext()){
+//                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+//                String people = cursor.getString(cursor.getColumnIndexOrThrow("people"));
+//                String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
+//                String distance = cursor.getString(cursor.getColumnIndexOrThrow("distance"));
+//                String memo = cursor.getString(cursor.getColumnIndexOrThrow("memo"));
+//
+//                tvDetailDate.setText(date);
+//                etdetailPeople.setText(people);
+//                etdetailDistance.setText(memo);
+//                etdetailTime.setText(time);
+//                etdetailMemo.setText(distance);
+//
+//        }else{
+//            Log.d(TAG, "cursor error");
+//        }
+//        cursor.close();
+//        db.close();
+//
+//        //dog 정보도 가져와서 체크박스 표시해주기
+//
+//        //map 정보 가져와서 폴리라인 그려주기
+//
+//    }
+//
+//    public void onClick(View v){
+//        String whereClause;
+//        String[] whereArgs;
+//        switch (v.getId()) {
+//            case R.id.btnWalkDel:
+//                //삭제
+//                whereClause = "_id=?";
+//                whereArgs = new String[] {id};
+//                db = helper.getWritableDatabase();
+//                db.delete(WalkDayDBHelper.TABLE_WALK, whereClause, whereArgs);
+//
+//                Toast.makeText(getApplicationContext(), "삭제완료", Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, "Delete");
+//                finish();
+//                break;
+//            case R.id.btnWalkModify:
+//                //db 수정
+//                ContentValues row = new ContentValues();
+//                row.put(WalkDayDBHelper.COL_PEOPLE, etdetailPeople.getText().toString());
+//                row.put(WalkDayDBHelper.COL_DISTANCE, etdetailDistance.getText().toString());
+//                row.put(WalkDayDBHelper.COL_TIME, etdetailTime.getText().toString());
+//                row.put(WalkDayDBHelper.COL_MEMO, etdetailMemo.getText().toString());
+//
+//                whereClause = "_id=?";
+//                whereArgs = new String[] {id};
+//
+//                db = helper.getWritableDatabase();
+//                db.update(WalkDayDBHelper.TABLE_DOG, row, whereClause, whereArgs);
+//
+//                Toast.makeText(getApplicationContext(), "수정완료", Toast.LENGTH_SHORT).show();
+//                Log.d(TAG, "Modify");
+//                break;
+//        }
+//        db.close();
+//    }
 }

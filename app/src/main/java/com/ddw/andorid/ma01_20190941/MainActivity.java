@@ -256,7 +256,15 @@ public class MainActivity extends Activity {
             parser = new WeatherParser();
             nowWeather = new WeatherDTO();
 
+            if(isAMorPm.equals("오후") && Integer.parseInt(now) != 1200){
+                now = Integer.toString(Integer.parseInt(now) + 1200);
+            }
+            else if(isAMorPm.equals("오전") && Integer.parseInt(now) == 1200){
+                now = "0000";
+            }
+
             Log.d(TAG, "onPostExecute: " + today + ", " + now);
+
             nowWeather = parser.parse(result, today, now);
             if(nowWeather == null){
                 Log.e(TAG, "nowWeather is null");
@@ -273,8 +281,8 @@ public class MainActivity extends Activity {
             if(nowWeather.getPty() == 0){
                 switch (nowWeather.getSky()){
                     case 1: //맑음
-                        if((isAMorPm.equals("오전") && (500 < Integer.parseInt(now) || Integer.parseInt(now) == 1200)) ||
-                                (isAMorPm.equals("오후") && (Integer.parseInt(now) > 700 || Integer.parseInt(now) < 1200))){ //오전 12~5시, 오후 7~11시 밤아이콘
+                        if((500 >= Integer.parseInt(now) || Integer.parseInt(now) == 1200) ||
+                                (Integer.parseInt(now) > 1900 && Integer.parseInt(now) <= 2300)){ //오전 12~5시, 오후 7~11시 밤아이콘
                             weatherIcon.setImageResource(R.drawable.sun_night);
                         }
                         else{

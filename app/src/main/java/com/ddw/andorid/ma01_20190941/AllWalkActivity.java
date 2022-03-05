@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AllWalkActivity extends Activity {
 
@@ -49,16 +50,20 @@ public class AllWalkActivity extends Activity {
                 null, null, null, null);
         mData.clear();
 
+        ArrayList<Integer> walkId = new ArrayList<>();
+
         if(cursor != null){
             cursor.moveToFirst();
             do {
-//                walkId.add(cursor.getInt(cursor.getColumnIndex("_id")));
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
                 String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
                 String people = cursor.getString(cursor.getColumnIndexOrThrow("people"));
                 String time = cursor.getString(cursor.getColumnIndexOrThrow("time"));
                 String distance = cursor.getString(cursor.getColumnIndexOrThrow("distance"));
 
                 WalkDTO walk = new WalkDTO();
+                walkId.add(id);
+                walk.setId(id);
                 walk.setDate(date);
                 walk.setPeople(people);
                 walk.setTime(time);
@@ -70,6 +75,30 @@ public class AllWalkActivity extends Activity {
         }
         cursor.close();
         db.close();
+
+        /*개정보 출력을 위한 db 가져오기*/
+        List<Integer> result = new ArrayList<>();
+        for(int i : walkId){
+            String selection = "walk_id=?";
+            String[] selectionArgs = {Integer.toString(i)};
+            db = helper.getWritableDatabase();
+            cursor = db.query(WalkDayDBHelper.TABLE_WALK_DOG, null, selection, selectionArgs,
+                    null, null, null, null);
+
+            result.clear();
+            if(cursor != null){
+                if(cursor.moveToFirst()) {
+                    do{
+                        result.add(cursor.getInt(cursor.getColumnIndexOrThrow("dog_id")));
+                    }while(cursor.moveToNext());
+                }
+                for(WalkDTO w : mData){
+                    if(w.getId() == i){
+                        w.setDogs(result);
+                    }
+                }
+            }
+        }
 
         walkAdapter = new WalkAdapter(getApplicationContext(), mData);
         lvAllWalk.setAdapter(walkAdapter);

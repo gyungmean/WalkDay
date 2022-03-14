@@ -103,6 +103,17 @@ public class WalkDogAdapter extends RecyclerView.Adapter<WalkDogAdapter.ViewHold
         return checked;
     }
 
+    public void dogCheck(ArrayList<Integer> list) {
+        Log.d(TAG, "dogCheck");
+        for(Item i : mData){
+            Log.d(TAG, "dogCheck : " + Integer.toString(i.getId()));
+            if (list.contains(i.getId())){
+                i.setSelected(true);
+                Log.d(TAG, "select : " + Integer.toString(i.getId()));
+            }
+        }
+    }
+
     public class Item
     {
         boolean isSelected;

@@ -91,7 +91,7 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
         pOptions.color(Color.RED);
         pOptions.width(7);
 
-        mapLoad();
+        //mapLoad();
 
         tvDetailDate = (TextView) findViewById(R.id.tvDetailDate);
         etdetailPeople = (EditText) findViewById(R.id.etdetailPeople);
@@ -106,7 +106,9 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d(TAG, "DogDetailActivity onResume");
 
+        /*dog 전체 정보*/
         String[] columns = {"_id", "name"};
         db = helper.getReadableDatabase();
         cursor = db.query(helper.TABLE_DOG, columns, null, null,
@@ -132,7 +134,8 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
             lvDetailDog.setAdapter(walkDogAdapter);
             lvDetailDog.setLayoutManager(new LinearLayoutManager(this));
         }
-        Log.d(TAG, "DogDetailActivity onResume");
+
+        /*산책 정보*/
         String selection = "_id=?";
         String[] selectionArgs = {id};
         db = helper.getWritableDatabase();
@@ -148,9 +151,9 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
 
                 tvDetailDate.setText(date);
                 etdetailPeople.setText(people);
-                etdetailDistance.setText(memo);
+                etdetailDistance.setText(distance);
                 etdetailTime.setText(time);
-                etdetailMemo.setText(distance);
+                etdetailMemo.setText(memo);
 
         }else{
             Log.d(TAG, "cursor error");
@@ -158,7 +161,24 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
         cursor.close();
         db.close();
 
+        /*dog 정보*/
+        selection = "walk_id=?";
+        db = helper.getWritableDatabase();
+        cursor = db.query(WalkDayDBHelper.TABLE_WALK_DOG, null, selection, selectionArgs,
+                null, null, null, null);
         //dog 정보도 가져와서 체크박스 표시해주기
+        ArrayList<Integer> dogId = new ArrayList<>();
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do{
+                    dogId.add(cursor.getInt(cursor.getColumnIndexOrThrow("dog_id")));
+                }while(cursor.moveToNext());
+            }
+        }
+        else{
+            Log.d(TAG, "cursor error");
+        }
+        walkDogAdapter.dogCheck(dogId);
 
         //map 정보 가져와서 폴리라인 그려주기
 

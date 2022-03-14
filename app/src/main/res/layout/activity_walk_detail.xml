@@ -42,6 +42,21 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="32dp" />
 
+            <fragment xmlns:map="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/writeMap"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="4dp"
+                map:cameraTargetLat="@string/init_lat"
+                map:cameraTargetLng="@string/init_lng"
+                app:cameraZoom="17"
+                app:uiZoomControls="true" />
+
+
             <TextView
                 android:id="@+id/textView1112"
                 android:layout_width="wrap_content"

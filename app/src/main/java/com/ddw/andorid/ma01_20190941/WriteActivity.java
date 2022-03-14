@@ -62,6 +62,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
     WalkDogAdapter walkDogAdapter;
 
     /* map 관련 */
+    boolean record = false;
     private GoogleMap mGoogleMap;
     private LocationManager locationManager;
     Marker currentMarker;
@@ -125,8 +126,6 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
     }
 
-
-
     public void onClick(View v){
         switch(v.getId()){
             case R.id.btnDateSelect:
@@ -137,6 +136,7 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
             case R.id.btnMapStart:
                 Log.d(TAG, "btnMapStart clicked!");
+                record = true;
                 Toast.makeText(this, "산책 기록 시작", Toast.LENGTH_SHORT).show();
                 if(checkPermission()) {
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
@@ -156,66 +156,78 @@ public class WriteActivity extends AppCompatActivity implements OnMapReadyCallba
 
             case R.id.btnUpdateAdd:
                 Log.d(TAG, "btnUpdateAdd clicked!");
-                walkDayDBHelper = new WalkDayDBHelper(getApplicationContext());
-                db = walkDayDBHelper.getWritableDatabase();
-                ContentValues row = new ContentValues();
-                try{
-                    newWalk.setPeople(etUpdatePeople.getText().toString());
-                    newWalk.setDistance(etUpdateDistance.getText().toString());
-                    newWalk.setTime(etUpdateTime.getText().toString());
-                    newWalk.setMemo(etUpdateMemo.getText().toString());
-                    newWalk.setMaps(moveRecord);
-                    newWalk.setDogs(walkDogAdapter.checkList());
-
-                    row.put(WalkDayDBHelper.COL_DATE, newWalk.getDate());
-                    row.put(WalkDayDBHelper.COL_PEOPLE, newWalk.getPeople());
-                    row.put(WalkDayDBHelper.COL_DISTANCE, newWalk.getDistance()); //distance부분 추가
-                    row.put(WalkDayDBHelper.COL_TIME, newWalk.getTime());
-                    row.put(WalkDayDBHelper.COL_MEMO, newWalk.getMemo());
-                } catch (Exception e) {
+                if(etUpdatePeople.getText().toString().equals("")
+                        || etUpdateDistance.getText().toString().equals("")
+                        || etUpdateTime.getText().toString().equals("")
+                        || etUpdateMemo.getText().toString().equals("")){
                     Toast.makeText(getApplicationContext(), "입력되지 않은 부분이 있습니다.", Toast.LENGTH_SHORT).show();
-                    break;
+                }else if(record == false){
+                    Toast.makeText(getApplicationContext(), "산책 코스를 기록하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }else if(newWalk.getDate() == null){
+                    Toast.makeText(getApplicationContext(), "날짜를 선택하지 않았습니다.", Toast.LENGTH_SHORT).show();
+                }else{
+                    //정상적으로 입력한 경우
+                    walkDayDBHelper = new WalkDayDBHelper(getApplicationContext());
+                    db = walkDayDBHelper.getWritableDatabase();
+                    ContentValues row = new ContentValues();
+                    try{
+                        newWalk.setPeople(etUpdatePeople.getText().toString());
+                        newWalk.setDistance(etUpdateDistance.getText().toString());
+                        newWalk.setTime(etUpdateTime.getText().toString());
+                        newWalk.setMemo(etUpdateMemo.getText().toString());
+                        newWalk.setMaps(moveRecord);
+                        newWalk.setDogs(walkDogAdapter.checkList());
+
+                        row.put(WalkDayDBHelper.COL_DATE, newWalk.getDate());
+                        row.put(WalkDayDBHelper.COL_PEOPLE, newWalk.getPeople());
+                        row.put(WalkDayDBHelper.COL_DISTANCE, newWalk.getDistance()); //distance부분 추가
+                        row.put(WalkDayDBHelper.COL_TIME, newWalk.getTime());
+                        row.put(WalkDayDBHelper.COL_MEMO, newWalk.getMemo());
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "입력되지 않은 부분이 있습니다.", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+
+                    long resultId = db.insert(WalkDayDBHelper.TABLE_WALK, null, row);
+                    Log.d(TAG, "resultId: " + Long.toString(resultId));
+                    walkDayDBHelper.close();
+                    db.close();
+
+                    //참조 테이블 정보 저장
+                    walkDayDBHelper = new WalkDayDBHelper(getApplicationContext());
+                    db = walkDayDBHelper.getWritableDatabase();
+
+                    ContentValues row2 = new ContentValues();
+
+                    for(int i : newWalk.getDogs()){
+                        row2.put(walkDayDBHelper.COL_WALKID, resultId);
+                        row2.put(walkDayDBHelper.COL_DOGID, i);
+                        db.insert(walkDayDBHelper.TABLE_WALK_DOG, null, row2);
+                        Log.d(TAG, "add dog id: " + Integer.toString(i));
+                    }
+
+                    walkDayDBHelper.close();
+                    db.close();
+
+                    walkDayDBHelper = new WalkDayDBHelper(getApplicationContext());
+                    db = walkDayDBHelper.getWritableDatabase();
+
+                    ContentValues row3 = new ContentValues();
+
+                    for(LatLng l : newWalk.getMaps()){
+                        row3.put(walkDayDBHelper.COL_WALKID, resultId);
+                        row3.put(walkDayDBHelper.COL_LAT, l.latitude);
+                        row3.put(walkDayDBHelper.COL_LNG, l.longitude);
+                        db.insert(walkDayDBHelper.TABLE_MAPS, null, row3);
+                        Log.d(TAG, "add lat: " + Double.toString(l.latitude) + " lng: " + Double.toString(l.longitude));
+                    }
+
+                    walkDayDBHelper.close();
+                    db.close();
+
+                    Toast.makeText(getApplicationContext(), "추가완료", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
-
-                long resultId = db.insert(WalkDayDBHelper.TABLE_WALK, null, row);
-                Log.d(TAG, "resultId: " + Long.toString(resultId));
-                walkDayDBHelper.close();
-                db.close();
-
-                //참조 테이블 정보 저장
-                walkDayDBHelper = new WalkDayDBHelper(getApplicationContext());
-                db = walkDayDBHelper.getWritableDatabase();
-
-                ContentValues row2 = new ContentValues();
-
-                for(int i : newWalk.getDogs()){
-                    row2.put(walkDayDBHelper.COL_WALKID, resultId);
-                    row2.put(walkDayDBHelper.COL_DOGID, i);
-                    db.insert(walkDayDBHelper.TABLE_WALK_DOG, null, row2);
-                    Log.d(TAG, "add dog id: " + Integer.toString(i));
-                }
-
-                walkDayDBHelper.close();
-                db.close();
-
-                walkDayDBHelper = new WalkDayDBHelper(getApplicationContext());
-                db = walkDayDBHelper.getWritableDatabase();
-
-                ContentValues row3 = new ContentValues();
-
-                for(LatLng l : newWalk.getMaps()){
-                    row3.put(walkDayDBHelper.COL_WALKID, resultId);
-                    row3.put(walkDayDBHelper.COL_LAT, l.latitude);
-                    row3.put(walkDayDBHelper.COL_LNG, l.longitude);
-                    db.insert(walkDayDBHelper.TABLE_MAPS, null, row3);
-                    Log.d(TAG, "add lat: " + Double.toString(l.latitude) + " lng: " + Double.toString(l.longitude));
-                }
-
-                walkDayDBHelper.close();
-                db.close();
-
-                Toast.makeText(getApplicationContext(), "추가완료", Toast.LENGTH_SHORT).show();
-                finish();
                 break;
         }
     }

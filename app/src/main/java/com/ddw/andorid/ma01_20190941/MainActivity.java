@@ -126,16 +126,16 @@ public class MainActivity extends Activity {
         setLocationInfo(); //위치 관련 정보 설정
 
         /* 날씨 api 호출 */
-        WeatherApiAddress = getResources().getString(R.string.weather_api_uri);
-        query = "&pageNo=1"
-                + "&numOfRows=1000"
-                + "&dataType=XML"
-                + "&base_date=" + base_date
-                + "&base_time=" + base_time
-                + "&nx=" + x
-                + "&ny=" + y;
-        Log.d(TAG, "api uri:" + WeatherApiAddress + query);
-        new WeatherAsyncTask().execute(WeatherApiAddress, query);
+//        WeatherApiAddress = getResources().getString(R.string.weather_api_uri);
+//        query = "&pageNo=1"
+//                + "&numOfRows=1000"
+//                + "&dataType=XML"
+//                + "&base_date=" + base_date
+//                + "&base_time=" + base_time
+//                + "&nx=" + x
+//                + "&ny=" + y;
+//        Log.d(TAG, "api uri:" + WeatherApiAddress + query);
+//        new WeatherAsyncTask().execute(WeatherApiAddress, query);
 
         setRecentWalk(); //최근 산책기록 출력
 

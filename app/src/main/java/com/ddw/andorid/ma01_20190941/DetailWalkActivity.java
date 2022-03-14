@@ -228,6 +228,7 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
                 db.close();
                 Toast.makeText(getApplicationContext(), "삭제완료", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Delete");
+                db.close();
                 finish();
                 break;
             case R.id.btnWalkModify:
@@ -242,7 +243,23 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
                 whereArgs = new String[] {id};
 
                 db = helper.getWritableDatabase();
-                db.update(WalkDayDBHelper.TABLE_DOG, row, whereClause, whereArgs);
+                db.update(WalkDayDBHelper.TABLE_WALK, row, whereClause, whereArgs);
+
+                //개정보저장
+                db = helper.getWritableDatabase();
+                whereClause = "walk_id=?";
+                db.delete(WalkDayDBHelper.TABLE_WALK_DOG, whereClause, whereArgs);
+
+                ContentValues row2 = new ContentValues();
+
+                for(int i : walkDogAdapter.checkList()){
+                    row2.put(helper.COL_WALKID, id);
+                    row2.put(helper.COL_DOGID, i);
+                    db.insert(helper.TABLE_WALK_DOG, null, row2);
+                    Log.d(TAG, "modify dog id: " + Integer.toString(i));
+                }
+
+                db.close();
 
                 Toast.makeText(getApplicationContext(), "수정완료", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Modify");
@@ -263,44 +280,13 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
         mGoogleMap = googleMap;
         Log.d(TAG, "Map ready");
 
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 18));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 17));
         if (checkPermission())
             mGoogleMap.setMyLocationEnabled(true);
 
         //map 정보 가져와서 폴리라인 그려주기
         drawRoute(latLngs);
-
-//        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-//            @Override
-//            public boolean onMyLocationButtonClick() {
-//                Toast.makeText(DetailWalkActivity.this, "현재 위치로 이동", Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//        });
-//
-//        mGoogleMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
-//            @Override
-//            public void onMyLocationClick(@NonNull Location location) {
-//                Toast.makeText(DetailWalkActivity.this,
-//                        String.format("현재 위치: (%f, %f)", location.getLatitude(), location.getLongitude()),
-//                        Toast.LENGTH_SHORT).show();
-//            }
-//        });
     }
-
-//    private Location getMyLocation() {
-//        Location currentLocation = null;
-//        // Register the listener with the Location Manager to receive location updates
-//        if (checkPermission()) {
-//            String locationProvider = LocationManager.GPS_PROVIDER;
-//            currentLocation = locationManager.getLastKnownLocation(locationProvider);
-//            if (currentLocation != null) {
-//                double lng = currentLocation.getLongitude();
-//                double lat = currentLocation.getLatitude();
-//            }
-//        }
-//        return currentLocation;
-//    }
 
     /* 필요 permission 요청 */
     private boolean checkPermission() {

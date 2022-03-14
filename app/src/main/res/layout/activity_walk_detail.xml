@@ -75,6 +75,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
+                android:gravity="center"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
@@ -95,6 +96,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
+                android:gravity="center"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
@@ -115,6 +117,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
+                android:gravity="center"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <TextView
@@ -135,6 +138,7 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:minHeight="48dp"
+                android:gravity="center"
                 tools:ignore="SpeakableTextPresentCheck" />
 
             <LinearLayout

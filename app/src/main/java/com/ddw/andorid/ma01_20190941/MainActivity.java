@@ -126,16 +126,16 @@ public class MainActivity extends Activity {
         setLocationInfo(); //위치 관련 정보 설정
 
         /* 날씨 api 호출 */
-//        WeatherApiAddress = getResources().getString(R.string.weather_api_uri);
-//        query = "&pageNo=1"
-//                + "&numOfRows=1000"
-//                + "&dataType=XML"
-//                + "&base_date=" + base_date
-//                + "&base_time=" + base_time
-//                + "&nx=" + x
-//                + "&ny=" + y;
-//        Log.d(TAG, "api uri:" + WeatherApiAddress + query);
-//        new WeatherAsyncTask().execute(WeatherApiAddress, query);
+        WeatherApiAddress = getResources().getString(R.string.weather_api_uri);
+        query = "&pageNo=1"
+                + "&numOfRows=1000"
+                + "&dataType=XML"
+                + "&base_date=" + base_date
+                + "&base_time=" + base_time
+                + "&nx=" + x
+                + "&ny=" + y;
+        Log.d(TAG, "api uri:" + WeatherApiAddress + query);
+        new WeatherAsyncTask().execute(WeatherApiAddress, query);
 
         setRecentWalk(); //최근 산책기록 출력
 
@@ -281,7 +281,7 @@ public class MainActivity extends Activity {
             if(nowWeather.getPty() == 0){
                 switch (nowWeather.getSky()){
                     case 1: //맑음
-                        if((500 >= Integer.parseInt(now) || Integer.parseInt(now) == 1200) ||
+                        if((500 >= Integer.parseInt(now) || Integer.parseInt(now) == 0000) ||
                                 (Integer.parseInt(now) > 1900 && Integer.parseInt(now) <= 2300)){ //오전 12~5시, 오후 7~11시 밤아이콘
                             weatherIcon.setImageResource(R.drawable.sun_night);
                         }
@@ -290,7 +290,7 @@ public class MainActivity extends Activity {
                         }
                         break;
                     case 3: //약간흐림
-                        if((isAMorPm.equals("오전") && (500 < Integer.parseInt(now) || Integer.parseInt(now) == 1200)) ||
+                        if((isAMorPm.equals("오전") && (500 < Integer.parseInt(now) || Integer.parseInt(now) == 0000)) ||
                                 (isAMorPm.equals("오후") && (Integer.parseInt(now) > 700 || Integer.parseInt(now) < 1200))){ //오전 12~5시, 오후 7~11시
                             weatherIcon.setImageResource(R.drawable.clouds_night);
                         }

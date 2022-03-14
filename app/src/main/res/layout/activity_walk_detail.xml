@@ -151,6 +151,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:backgroundTint="@color/pale_pink"
+                    android:onClick="onClick"
                     android:text="Delete" />
 
                 <Button
@@ -159,6 +160,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:backgroundTint="@color/pink"
+                    android:onClick="onClick"
                     android:text="Modify" />
             </LinearLayout>
 

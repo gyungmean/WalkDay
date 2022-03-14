@@ -74,7 +74,7 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
     private MarkerOptions markerOptions;
     PolylineOptions pOptions;
     Polyline polyline;
-    List<LatLng> moveRecord = new ArrayList<LatLng>();
+    ArrayList<LatLng> latLngs = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,9 +89,9 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
 
         pOptions = new PolylineOptions();
         pOptions.color(Color.RED);
-        pOptions.width(7);
+        pOptions.width(15);
 
-        //mapLoad();
+        mapLoad();
 
         tvDetailDate = (TextView) findViewById(R.id.tvDetailDate);
         etdetailPeople = (EditText) findViewById(R.id.etdetailPeople);
@@ -179,9 +179,36 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
             Log.d(TAG, "cursor error");
         }
         walkDogAdapter.dogCheck(dogId);
+        cursor.close();
+        db.close();
 
         //map 정보 가져와서 폴리라인 그려주기
+        selection = "walk_id=?";
+        db = helper.getWritableDatabase();
+        cursor = db.query(WalkDayDBHelper.TABLE_MAPS, null, selection, selectionArgs,
+                null, null, null, null);
 
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                do{
+                    latLngs.add(new LatLng(cursor.getDouble(cursor.getColumnIndexOrThrow("lat")), cursor.getDouble(cursor.getColumnIndexOrThrow("lng"))));
+                }while(cursor.moveToNext());
+            }
+        }
+        else{
+            Log.d(TAG, "cursor error");
+        }
+        cursor.close();
+        db.close();
+
+    }
+
+    public void drawRoute(ArrayList<LatLng> latLngs){
+        for(LatLng latLng : latLngs){
+            Log.d(TAG, "Add Location : " + latLng.toString());
+            pOptions.add(latLng);
+            polyline = mGoogleMap.addPolyline(pOptions);
+        }
     }
 
     public void onClick(View v){
@@ -190,11 +217,15 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
         switch (v.getId()) {
             case R.id.btnWalkDel:
                 //삭제
+                Log.d(TAG, "Delete button clicked");
                 whereClause = "_id=?";
                 whereArgs = new String[] {id};
                 db = helper.getWritableDatabase();
                 db.delete(WalkDayDBHelper.TABLE_WALK, whereClause, whereArgs);
-
+                whereClause = "walk_id=?";
+                db.delete(WalkDayDBHelper.TABLE_WALK_DOG, whereClause, whereArgs);
+                db.delete(WalkDayDBHelper.TABLE_MAPS, whereClause, whereArgs);
+                db.close();
                 Toast.makeText(getApplicationContext(), "삭제완료", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "Delete");
                 finish();
@@ -224,7 +255,7 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
     private void mapLoad() {
         SupportMapFragment mapFragment =
                 (SupportMapFragment)  getSupportFragmentManager().findFragmentById(R.id.writeMap);
-        mapFragment.getMapAsync(this);      // 매배변수 this: MainActivity 가 OnMapReadyCallback 을 구현하므로
+        mapFragment.getMapAsync(this);      //
     }
 
     @Override
@@ -232,94 +263,44 @@ public class DetailWalkActivity extends AppCompatActivity implements OnMapReadyC
         mGoogleMap = googleMap;
         Log.d(TAG, "Map ready");
 
-        Location userLocation = getMyLocation();
-        LatLng currentLog  = new LatLng(37.606320, 127.041758); //기본 위도 경도 저장
-        if( userLocation != null ) {
-            Log.d(TAG, "lat: " + userLocation.getLatitude() + " lng: " + userLocation.getLongitude());
-            currentLog = new LatLng(userLocation.getLatitude(), userLocation.getLongitude()); //위도 경도 저장
-        }
-
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLog, 17)); //지정한 위치로 이동 후 17의 배율로 확대
-        //marker 표시
-        markerOptions = new MarkerOptions();
-        markerOptions.position(currentLog);
-//            options.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE)); //디폴트 마커 사용
-
-        //지도에 마커 추가 후 추가한 마커 정보 기록
-        currentMarker = mGoogleMap.addMarker(markerOptions);
-        currentMarker.showInfoWindow();
-
-
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 18));
         if (checkPermission())
             mGoogleMap.setMyLocationEnabled(true);
 
-        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                Toast.makeText(DetailWalkActivity.this, "현재 위치로 이동", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-        });
+        //map 정보 가져와서 폴리라인 그려주기
+        drawRoute(latLngs);
 
-        mGoogleMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
-            @Override
-            public void onMyLocationClick(@NonNull Location location) {
-                Toast.makeText(DetailWalkActivity.this,
-                        String.format("현재 위치: (%f, %f)", location.getLatitude(), location.getLongitude()),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // TODO: 맵 로딩 후 초기에 해야 할 작업 구현
-        markerOptions = new MarkerOptions();
+//        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+//            @Override
+//            public boolean onMyLocationButtonClick() {
+//                Toast.makeText(DetailWalkActivity.this, "현재 위치로 이동", Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
+//
+//        mGoogleMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
+//            @Override
+//            public void onMyLocationClick(@NonNull Location location) {
+//                Toast.makeText(DetailWalkActivity.this,
+//                        String.format("현재 위치: (%f, %f)", location.getLatitude(), location.getLongitude()),
+//                        Toast.LENGTH_SHORT).show();
+//            }
+//        });
     }
 
-    /*구글맵을 멤버변수로 로딩*/
-    LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(@NonNull Location location) { //위치 정보를 수신할 때마다 위치로 지도의 중심 변경
-            Log.d(TAG, "location changed");
-            LatLng currentLoc = new LatLng(location.getLatitude(), location.getLongitude());
-            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLoc, 17));
-
-            //움직이는 마커 표시 이동중 중심
-            currentMarker.setPosition(currentLoc);
-
-            //현재 위치를 선 그리기 위치로 지정
-            pOptions.add(currentLoc);
-
-            moveRecord.add(currentLoc);
-            Log.d(TAG, "Add Location : " + "lat: " + location.getLatitude() + " lng: " + location.getLongitude());
-
-            //선 그리기 수행
-            polyline = mGoogleMap.addPolyline(pOptions);
-            moveRecord.add(currentLoc);
-
-        }
-
-        //안쓰는 함수들
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras){ }
-        @Override
-        public void onProviderEnabled(String provider){ }
-        @Override
-        public void onProviderDisabled(String provider){ }
-    };
-
-    private Location getMyLocation() {
-        Location currentLocation = null;
-        // Register the listener with the Location Manager to receive location updates
-        if (checkPermission()) {
-            String locationProvider = LocationManager.GPS_PROVIDER;
-            currentLocation = locationManager.getLastKnownLocation(locationProvider);
-            if (currentLocation != null) {
-                double lng = currentLocation.getLongitude();
-                double lat = currentLocation.getLatitude();
-            }
-        }
-        return currentLocation;
-    }
+//    private Location getMyLocation() {
+//        Location currentLocation = null;
+//        // Register the listener with the Location Manager to receive location updates
+//        if (checkPermission()) {
+//            String locationProvider = LocationManager.GPS_PROVIDER;
+//            currentLocation = locationManager.getLastKnownLocation(locationProvider);
+//            if (currentLocation != null) {
+//                double lng = currentLocation.getLongitude();
+//                double lat = currentLocation.getLatitude();
+//            }
+//        }
+//        return currentLocation;
+//    }
 
     /* 필요 permission 요청 */
     private boolean checkPermission() {

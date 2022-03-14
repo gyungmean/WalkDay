@@ -124,6 +124,7 @@ public class AddDogActivity extends Activity {
                         Log.d(TAG, "Save Error!");
                     }
                 }catch(Exception e){
+                    e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "입력되지 않은 부분이 있습니다.", Toast.LENGTH_SHORT).show();
                     break;
                 }

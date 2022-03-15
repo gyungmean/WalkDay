@@ -14,6 +14,7 @@
 3. 산책 기록 : 구글맵 API를 통해 지도에 산책한 코스를 기록합니다.
 
 ## 시연 영상
+https://youtu.be/tFkBca19F0c
 
 ## 개발환경
 - Android Studio Arctic Fox | 2020.3.1 Patch 3
